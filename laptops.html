@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+ТехноМаркет</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .laptop-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .active-page {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .active-tab {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Шапка -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="main.html" class="text-2xl font-bold text-blue-600 flex items-center">
+                    <i class="fas fa-laptop-code mr-2"></i>
+                    ТехноМаркет
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="main.html" class="text-gray-600 hover:text-blue-500">Главная</a>
+                <div class="relative inline-block group">
+                    <button class="text-gray-600 hover:text-blue-500">Каталог</button>
+                    <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded shadow-md opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200">
+                        <a href="phone.html" class="block px-4 py-2 hover:bg-gray-100">Смартфоны</a>
+                        <a href="laptops.html" class="block px-4 py-2 hover:bg-gray-100">Ноутбуки</a>
+                        <a href="tv.html" class="block px-4 py-2 hover:bg-gray-100">Телевизоры</a>
+                        <a href="dom.html" class="block px-4 py-2 hover:bg-gray-100">Бытовая техника</a>
+                        <a href="comp.html" class="block px-4 py-2 hover:bg-gray-100">Комплектующие</a>
+                    </div>
+                </div>
+                <a href="delivery.html" class="text-gray-600 hover:text-blue-500">Доставка</a>
+                <a href="#" class="text-gray-600 hover:text-blue-500">Контакты</a>
+            </div>
+
+
+            <div class="flex items-center space-x-4">
+                <a href="login.html" class="text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-user"></i>
+                </a>
+                <a href="cart.html" class="text-gray-600 hover:text-blue-500 relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Навигационные вкладки -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex space-x-8">
+                <button class="tab-btn py-4 px-1 font-medium text-gray-500 hover:text-blue-500 transition-all active-tab" data-tab="all">Все ноутбуки</button>
+                <button class="tab-btn py-4 px-1 font-medium text-gray-500 hover:text-blue-500 transition-all" data-tab="gaming">Игровые ноутбуки</button>
+                <button class="tab-btn py-4 px-1 font-medium text-gray-500 hover:text-blue-500 transition-all" data-tab="office">Офисные ноутбуки</button>
+                <button class="tab-btn py-4 px-1 font-medium text-gray-500 hover:text-blue-500 transition-all" data-tab="ultrabook">Ультрабуки</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Хлебные крошки -->
+        <div class="flex items-center text-sm text-gray-600 mb-6">
+            <a href="#" class="hover:text-blue-500">Главная</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-400" id="breadcrumb-category">Все ноутбуки</span>
+        </div>
+
+        <!-- Заголовок и фильтры -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0" id="category-title">Все ноутбуки</h2>
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
+                <div class="relative">
+                    <select id="sort" class="appearance-none bg-white border border-gray-300 rounded-md px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full">
+                        <option value="price_asc">Сначала дешевые</option>
+                        <option value="price_desc">Сначала дорогие</option>
+                        <option value="popular">По популярности</option>
+                        <option value="newest">Сначала новые</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="relative">
+                    <select id="filter" class="appearance-none bg-white border border-gray-300 rounded-md px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full">
+                        <option value="all">Все бренды</option>
+                        <option value="asus">ASUS</option>
+                        <option value="msi">MSI</option>
+                        <option value="lenovo">Lenovo</option>
+                        <option value="acer">Acer</option>
+                        <option value="hp">HP</option>
+                        <option value="dell">Dell</option>
+                        <option value="apple">Apple</option>
+                        <option value="huawei">Huawei</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Список ноутбуков -->
+        <div id="laptops-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            <!-- Ноутбуки будут загружены через JavaScript -->
+        </div>
+
+        <!-- Пагинация -->
+        <div class="flex justify-center mt-8">
+            <nav class="flex items-center space-x-1">
+                <button id="prev-page" class="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="page-btn px-4 py-1 rounded-md border border-blue-500 bg-blue-500 text-white active-page" data-page="1">1</button>
+                <button class="page-btn px-4 py-1 rounded-md border border-gray-300 hover:bg-gray-50" data-page="2">2</button>
+                <button class="page-btn px-4 py-1 rounded-md border border-gray-300 hover:bg-gray-50" data-page="3">3</button>
+                <button id="next-page" class="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </nav>
+        </div>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-gray-400">© 2025 Магазин ноутбуков. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Данные ноутбуков
+        const laptops = [
+            {
+                id: 1,
+                name: "ASUS ROG Strix G15",
+                brand: "asus",
+                category: "gaming",
+                price: 79990,
+                oldPrice: 89990,
+                rating: 4.7,
+                reviews: 128,
+                specs: {
+                    cpu: "Intel Core i7-11800H",
+                    ram: "16 ГБ DDR4",
+                    storage: "1 ТБ SSD",
+                    gpu: "NVIDIA RTX 3060 6 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=ASUS+ROG",
+                badge: "Акция",
+                badgeColor: "bg-red-500"
+            },
+            {
+                id: 2,
+                name: "MSI Katana GF76",
+                brand: "msi",
+                category: "gaming",
+                price: 64990,
+                rating: 4.2,
+                reviews: 94,
+                specs: {
+                    cpu: "Intel Core i5-11400H",
+                    ram: "8 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "NVIDIA RTX 3050 4 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=MSI+Katana"
+            },
+            {
+                id: 3,
+                name: "Lenovo Legion 5 Pro",
+                brand: "lenovo",
+                category: "gaming",
+                price: 119990,
+                rating: 5.0,
+                reviews: 156,
+                specs: {
+                    cpu: "AMD Ryzen 7 5800H",
+                    ram: "32 ГБ DDR4",
+                    storage: "1 ТБ SSD",
+                    gpu: "NVIDIA RTX 3070 8 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=Lenovo+Legion",
+                badge: "Новинка",
+                badgeColor: "bg-green-500"
+            },
+            {
+                id: 4,
+                name: "Acer Nitro 5",
+                brand: "acer",
+                category: "gaming",
+                price: 49990,
+                oldPrice: 59990,
+                rating: 4.5,
+                reviews: 87,
+                specs: {
+                    cpu: "Intel Core i5-10300H",
+                    ram: "16 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "NVIDIA GTX 1650 4 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=Acer+Nitro"
+            },
+            {
+                id: 5,
+                name: "HP Omen 15",
+                brand: "hp",
+                category: "gaming",
+                price: 89990,
+                rating: 4.0,
+                reviews: 76,
+                specs: {
+                    cpu: "AMD Ryzen 5 5600H",
+                    ram: "16 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "NVIDIA RTX 3060 6 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=HP+Omen"
+            },
+            {
+                id: 6,
+                name: "Dell G15 5511",
+                brand: "dell",
+                category: "gaming",
+                price: 94990,
+                rating: 5.0,
+                reviews: 203,
+                specs: {
+                    cpu: "Intel Core i7-11800H",
+                    ram: "16 ГБ DDR4",
+                    storage: "1 ТБ SSD",
+                    gpu: "NVIDIA RTX 3050 Ti 4 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=Dell+G15",
+                badge: "Топ продаж",
+                badgeColor: "bg-purple-500"
+            },
+            {
+                id: 7,
+                name: "ASUS TUF Dash F15",
+                brand: "asus",
+                category: "gaming",
+                price: 74990,
+                rating: 4.0,
+                reviews: 68,
+                specs: {
+                    cpu: "Intel Core i5-11300H",
+                    ram: "8 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "NVIDIA RTX 3050 4 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=ASUS+TUF"
+            },
+            {
+                id: 8,
+                name: "Gigabyte Aorus 15P",
+                brand: "gigabyte",
+                category: "gaming",
+                price: 109990,
+                oldPrice: 129990,
+                rating: 4.6,
+                reviews: 112,
+                specs: {
+                    cpu: "Intel Core i7-11800H",
+                    ram: "32 ГБ DDR4",
+                    storage: "1 ТБ SSD",
+                    gpu: "NVIDIA RTX 3070 8 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=Gigabyte+Aorus",
+                badge: "Акция",
+                badgeColor: "bg-red-500"
+            },
+            {
+                id: 9,
+                name: "Lenovo IdeaPad 5",
+                brand: "lenovo",
+                category: "office",
+                price: 44990,
+                rating: 4.3,
+                reviews: 56,
+                specs: {
+                    cpu: "AMD Ryzen 5 5500U",
+                    ram: "8 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "AMD Radeon Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=Lenovo+IdeaPad"
+            },
+            {
+                id: 10,
+                name: "ASUS VivoBook 15",
+                brand: "asus",
+                category: "office",
+                price: 39990,
+                oldPrice: 45990,
+                rating: 4.1,
+                reviews: 42,
+                specs: {
+                    cpu: "Intel Core i3-1115G4",
+                    ram: "8 ГБ DDR4",
+                    storage: "256 ГБ SSD",
+                    gpu: "Intel UHD Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=ASUS+VivoBook",
+                badge: "Акция",
+                badgeColor: "bg-red-500"
+            },
+            {
+                id: 11,
+                name: "HP Pavilion 15",
+                brand: "hp",
+                category: "office",
+                price: 52990,
+                rating: 4.4,
+                reviews: 78,
+                specs: {
+                    cpu: "Intel Core i5-1135G7",
+                    ram: "16 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "Intel Iris Xe Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=HP+Pavilion"
+            },
+            {
+                id: 12,
+                name: "Dell Inspiron 15",
+                brand: "dell",
+                category: "office",
+                price: 57990,
+                rating: 4.2,
+                reviews: 65,
+                specs: {
+                    cpu: "Intel Core i5-1135G7",
+                    ram: "8 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "Intel Iris Xe Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=Dell+Inspiron"
+            },
+            {
+                id: 13,
+                name: "ASUS ZenBook 14",
+                brand: "asus",
+                category: "ultrabook",
+                price: 89990,
+                rating: 4.8,
+                reviews: 134,
+                specs: {
+                    cpu: "AMD Ryzen 7 5800U",
+                    ram: "16 ГБ DDR4",
+                    storage: "1 ТБ SSD",
+                    gpu: "AMD Radeon Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=ASUS+ZenBook",
+                badge: "Топ продаж",
+                badgeColor: "bg-purple-500"
+            },
+            {
+                id: 14,
+                name: "HP Spectre x360",
+                brand: "hp",
+                category: "ultrabook",
+                price: 109990,
+                rating: 4.9,
+                reviews: 98,
+                specs: {
+                    cpu: "Intel Core i7-1165G7",
+                    ram: "16 ГБ DDR4",
+                    storage: "1 ТБ SSD",
+                    gpu: "Intel Iris Xe Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=HP+Sspectre"
+            },
+            {
+                id: 15,
+                name: "Lenovo Yoga Slim 7",
+                brand: "lenovo",
+                category: "ultrabook",
+                price: 79990,
+                oldPrice: 89990,
+                rating: 4.6,
+                reviews: 87,
+                specs: {
+                    cpu: "AMD Ryzen 5 5600U",
+                    ram: "16 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "AMD Radeon Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=Lenovo+Yoga",
+                badge: "Акция",
+                badgeColor: "bg-red-500"
+            },
+            {
+                id: 16,
+                name: "Dell XPS 13",
+                brand: "dell",
+                category: "ultrabook",
+                price: 119990,
+                rating: 5.0,
+                reviews: 156,
+                specs: {
+                    cpu: "Intel Core i7-1165G7",
+                    ram: "16 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "Intel Iris Xe Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=Dell+XPS",
+                badge: "Премиум",
+                badgeColor: "bg-yellow-500"
+            },
+            // Новые ноутбуки
+            {
+                id: 17,
+                name: "Apple MacBook Pro 14",
+                brand: "apple",
+                category: "ultrabook",
+                price: 149990,
+                rating: 4.9,
+                reviews: 210,
+                specs: {
+                    cpu: "Apple M1 Pro",
+                    ram: "16 ГБ",
+                    storage: "512 ГБ SSD",
+                    gpu: "16-core GPU"
+                },
+                image: "https://via.placeholder.com/300x200?text=MacBook+Pro",
+                badge: "Премиум",
+                badgeColor: "bg-yellow-500"
+            },
+            {
+                id: 18,
+                name: "Huawei MateBook D15",
+                brand: "huawei",
+                category: "office",
+                price: 45990,
+                rating: 4.3,
+                reviews: 67,
+                specs: {
+                    cpu: "Intel Core i5-1135G7",
+                    ram: "8 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "Intel Iris Xe Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=Huawei+MateBook"
+            },
+            {
+                id: 19,
+                name: "ASUS ROG Zephyrus G14",
+                brand: "asus",
+                category: "gaming",
+                price: 129990,
+                rating: 4.8,
+                reviews: 145,
+                specs: {
+                    cpu: "AMD Ryzen 9 5900HS",
+                    ram: "32 ГБ DDR4",
+                    storage: "1 ТБ SSD",
+                    gpu: "NVIDIA RTX 3060 6 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=ASUS+Zephyrus",
+                badge: "Топ продаж",
+                badgeColor: "bg-purple-500"
+            },
+            {
+                id: 20,
+                name: "MSI Stealth 15M",
+                brand: "msi",
+                category: "gaming",
+                price: 99990,
+                rating: 4.5,
+                reviews: 98,
+                specs: {
+                    cpu: "Intel Core i7-11375H",
+                    ram: "16 ГБ DDR4",
+                    storage: "1 ТБ SSD",
+                    gpu: "NVIDIA RTX 3060 6 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=MSI+Stealth"
+            },
+            {
+                id: 21,
+                name: "Lenovo ThinkPad X1 Carbon",
+                brand: "lenovo",
+                category: "ultrabook",
+                price: 109990,
+                rating: 4.7,
+                reviews: 112,
+                specs: {
+                    cpu: "Intel Core i5-1135G7",
+                    ram: "16 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "Intel Iris Xe Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=ThinkPad+X1",
+                badge: "Бизнес",
+                badgeColor: "bg-blue-500"
+            },
+            {
+                id: 22,
+                name: "Acer Swift 3",
+                brand: "acer",
+                category: "ultrabook",
+                price: 59990,
+                rating: 4.2,
+                reviews: 54,
+                specs: {
+                    cpu: "AMD Ryzen 7 5700U",
+                    ram: "8 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "AMD Radeon Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=Acer+Swift"
+            },
+            {
+                id: 23,
+                name: "HP EliteBook 840",
+                brand: "hp",
+                category: "office",
+                price: 79990,
+                rating: 4.4,
+                reviews: 76,
+                specs: {
+                    cpu: "Intel Core i5-1135G7",
+                    ram: "16 ГБ DDR4",
+                    storage: "512 ГБ SSD",
+                    gpu: "Intel Iris Xe Graphics"
+                },
+                image: "https://via.placeholder.com/300x200?text=HP+EliteBook"
+            },
+            {
+                id: 24,
+                name: "Dell Alienware m15 R6",
+                brand: "dell",
+                category: "gaming",
+                price: 159990,
+                rating: 4.9,
+                reviews: 187,
+                specs: {
+                    cpu: "Intel Core i7-11800H",
+                    ram: "32 ГБ DDR4",
+                    storage: "1 ТБ SSD",
+                    gpu: "NVIDIA RTX 3070 8 ГБ"
+                },
+                image: "https://via.placeholder.com/300x200?text=Alienware",
+                badge: "Флагман",
+                badgeColor: "bg-yellow-500"
+            }
+        ];
+
+        // Переменные для пагинации
+        let currentPage = 1;
+        const itemsPerPage = 8;
+        let filteredLaptops = [...laptops];
+        let currentCategory = "all";
+        let currentBrandFilter = "all";
+
+        // Функция для отображения ноутбуков
+        function displayLaptops(laptopsToDisplay, page) {
+            const container = document.getElementById('laptops-container');
+            container.innerHTML = '';
+
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedLaptops = laptopsToDisplay.slice(start, end);
+
+            if (paginatedLaptops.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-laptop text-gray-300 text-5xl mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-700 mb-2">Ноутбуки не найдены</h3>
+                        <p class="text-gray-500">Попробуйте изменить параметры фильтрации</p>
+                    </div>
+                `;
+                return;
+            }
+
+            paginatedLaptops.forEach(laptop => {
+                const stars = [];
+                const fullStars = Math.floor(laptop.rating);
+                const hasHalfStar = laptop.rating % 1 >= 0.5;
+
+                for (let i = 0; i < fullStars; i++) {
+                    stars.push('<i class="fas fa-star"></i>');
+                }
+
+                if (hasHalfStar) {
+                    stars.push('<i class="fas fa-star-half-alt"></i>');
+                }
+
+                const emptyStars = 5 - stars.length;
+                for (let i = 0; i < emptyStars; i++) {
+                    stars.push('<i class="far fa-star"></i>');
+                }
+
+                const badge = laptop.badge ?
+                    `<span class="absolute top-2 left-2 ${laptop.badgeColor || 'bg-blue-500'} text-white text-xs px-2 py-1 rounded">${laptop.badge}</span>` :
+                    '';
+
+                const oldPrice = laptop.oldPrice ?
+                    `<p class="text-gray-400 line-through text-sm">${laptop.oldPrice.toLocaleString('ru-RU')} ₽</p>` :
+                    '';
+
+                // Определяем цвет категории
+                let categoryColor = "bg-blue-100 text-blue-800";
+                if (laptop.category === "gaming") categoryColor = "bg-red-100 text-red-800";
+                else if (laptop.category === "office") categoryColor = "bg-green-100 text-green-800";
+                else if (laptop.category === "ultrabook") categoryColor = "bg-purple-100 text-purple-800";
+
+                // Текст категории
+                let categoryText = "";
+                if (laptop.category === "gaming") categoryText = "Игровой";
+                else if (laptop.category === "office") categoryText = "Офисный";
+                else if (laptop.category === "ultrabook") categoryText = "Ультрабук";
+
+                const laptopCard = `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden laptop-card transition-all hover:shadow-lg">
+                        <div class="relative">
+                            <img src="${laptop.image}" alt="${laptop.name}" class="w-full h-48 object-cover">
+                            ${badge}
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-semibold text-lg text-gray-800">${laptop.name}</h3>
+                                <span class="${categoryColor} text-xs px-2 py-1 rounded">${categoryText}</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="flex text-yellow-400">
+                                    ${stars.join('')}
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">${laptop.rating} (${laptop.reviews})</span>
+                            </div>
+                            <div class="mb-3">
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><i class="fas fa-microchip text-blue-500 mr-2"></i> ${laptop.specs.cpu}</li>
+                                    <li><i class="fas fa-memory text-blue-500 mr-2"></i> ${laptop.specs.ram}</li>
+                                    <li><i class="fas fa-hard-drive text-blue-500 mr-2"></i> ${laptop.specs.storage}</li>
+                                    <li><i class="fas fa-tv text-blue-500 mr-2"></i> ${laptop.specs.gpu}</li>
+                                </ul>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    ${oldPrice}
+                                    <p class="text-xl font-bold text-gray-800">${laptop.price.toLocaleString('ru-RU')} ₽</p>
+                                </div>
+                                <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md transition-all">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.innerHTML += laptopCard;
+            });
+        }
+
+        // Функция для сортировки ноутбуков
+        function sortLaptops(sortBy) {
+            switch(sortBy) {
+                case 'price_asc':
+                    filteredLaptops.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price_desc':
+                    filteredLaptops.sort((a, b) => b.price - a.price);
+                    break;
+                case 'popular':
+                    filteredLaptops.sort((a, b) => b.reviews - a.reviews);
+                    break;
+                case 'newest':
+                    // Предположим, что новые ноутбуки имеют больший ID
+                    filteredLaptops.sort((a, b) => b.id - a.id);
+                    break;
+                default:
+                    break;
+            }
+            currentPage = 1;
+            displayLaptops(filteredLaptops, currentPage);
+            updatePagination();
+        }
+
+        // Функция для фильтрации ноутбуков по бренду
+        function filterByBrand(brand) {
+            currentBrandFilter = brand;
+            applyFilters();
+        }
+
+        // Функция для фильтрации ноутбуков по категории
+        function filterByCategory(category) {
+            currentCategory = category;
+            applyFilters();
+
+            // Обновляем заголовок и хлебные крошки
+            const categoryTitle = document.getElementById('category-title');
+            const breadcrumbCategory = document.getElementById('breadcrumb-category');
+
+            if (category === "all") {
+                categoryTitle.textContent = "Все ноутбуки";
+                breadcrumbCategory.textContent = "Все ноутбуки";
+            } else if (category === "gaming") {
+                categoryTitle.textContent = "Игровые ноутбуки";
+                breadcrumbCategory.textContent = "Игровые ноутбуки";
+            } else if (category === "office") {
+                categoryTitle.textContent = "Офисные ноутбуки";
+                breadcrumbCategory.textContent = "Офисные ноутбуки";
+            } else if (category === "ultrabook") {
+                categoryTitle.textContent = "Ультрабуки";
+                breadcrumbCategory.textContent = "Ультрабуки";
+            }
+        }
+
+        // Применяем все фильтры
+        function applyFilters() {
+            filteredLaptops = laptops.filter(laptop => {
+                const categoryMatch = currentCategory === "all" || laptop.category === currentCategory;
+                const brandMatch = currentBrandFilter === "all" || laptop.brand === currentBrandFilter;
+                return categoryMatch && brandMatch;
+            });
+
+            currentPage = 1;
+            displayLaptops(filteredLaptops, currentPage);
+            updatePagination();
+        }
+
+        // Функция для обновления активной страницы в пагинации
+        function updatePagination() {
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                btn.classList.remove('active-page', 'border-blue-500', 'bg-blue-500', 'text-white');
+                btn.classList.add('border-gray-300', 'hover:bg-gray-50');
+
+                if (parseInt(btn.dataset.page) === currentPage) {
+                    btn.classList.add('active-page', 'border-blue-500', 'bg-blue-500', 'text-white');
+                    btn.classList.remove('border-gray-300', 'hover:bg-gray-50');
+                }
+            });
+
+            // Скрываем/показываем кнопки пагинации если страниц мало
+            const totalPages = Math.ceil(filteredLaptops.length / itemsPerPage);
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                const pageNum = parseInt(btn.dataset.page);
+                if (pageNum > totalPages) {
+                    btn.style.display = 'none';
+                } else {
+                    btn.style.display = 'inline-flex';
+                }
+            });
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            displayLaptops(filteredLaptops, currentPage);
+
+            // Сортировка
+            document.getElementById('sort').addEventListener('change', function() {
+                sortLaptops(this.value);
+            });
+
+            // Фильтрация по бренду
+            document.getElementById('filter').addEventListener('change', function() {
+                filterByBrand(this.value);
+            });
+
+            // Вкладки категорий
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Удаляем активный класс у всех кнопок
+                    document.querySelectorAll('.tab-btn').forEach(b => {
+                        b.classList.remove('active-tab');
+                    });
+
+                    // Добавляем активный класс текущей кнопке
+                    this.classList.add('active-tab');
+
+                    // Фильтруем по категории
+                    filterByCategory(this.dataset.tab);
+                });
+            });
+
+            // Пагинация
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentPage = parseInt(this.dataset.page);
+                    displayLaptops(filteredLaptops, currentPage);
+                    updatePagination();
+                });
+            });
+
+            // Кнопки вперед/назад
+            document.getElementById('prev-page').addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayLaptops(filteredLaptops, currentPage);
+                    updatePagination();
+                }
+            });
+
+            document.getElementById('next-page').addEventListener('click', function() {
+                const totalPages = Math.ceil(filteredLaptops.length / itemsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayLaptops(filteredLaptops, currentPage);
+                    updatePagination();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

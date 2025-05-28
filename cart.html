@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина покупок</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .cart-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .quantity-btn:hover {
+            background-color: #e5e7eb;
+        }
+        .checkout-btn:hover {
+            background-color: #1d4ed8;
+        }
+        .remove-btn:hover {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="main.html" class="text-2xl font-bold text-blue-600 flex items-center">
+                    <i class="fas fa-laptop-code mr-2"></i>
+                    ТехноМаркет
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="main.html" class="text-gray-600 hover:text-blue-500">Главная</a>
+                <div class="relative inline-block group">
+                    <button class="text-gray-600 hover:text-blue-500">Каталог</button>
+                    <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded shadow-md opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200">
+                        <a href="phone.html" class="block px-4 py-2 hover:bg-gray-100">Смартфоны</a>
+                        <a href="laptops.html" class="block px-4 py-2 hover:bg-gray-100">Ноутбуки</a>
+                        <a href="tv.html" class="block px-4 py-2 hover:bg-gray-100">Телевизоры</a>
+                        <a href="dom.html" class="block px-4 py-2 hover:bg-gray-100">Бытовая техника</a>
+                        <a href="comp.html" class="block px-4 py-2 hover:bg-gray-100">Комплектующие</a>
+                    </div>
+                </div>
+                <a href="delivery.html" class="text-gray-600 hover:text-blue-500">Доставка</a>
+                <a href="#" class="text-gray-600 hover:text-blue-500">Контакты</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="login.html" class="text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-user"></i>
+                </a>
+                <a href="cart.html" class="text-gray-600 hover:text-blue-500 relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 flex items-center">
+            <i class="fas fa-shopping-cart mr-3 text-indigo-600"></i> Ваша корзина
+        </h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Основная часть с товарами -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <!-- Заголовок списка товаров -->
+                    <div class="p-4 border-b border-gray-200 bg-gray-50">
+                        <div class="grid grid-cols-12 gap-4 font-medium text-gray-600">
+                            <div class="col-span-6">Товар</div>
+                            <div class="col-span-2 text-center">Цена</div>
+                            <div class="col-span-2 text-center">Количество</div>
+                            <div class="col-span-2 text-right">Сумма</div>
+                        </div>
+                    </div>
+
+                    <!-- Список товаров -->
+                    <div id="cart-items">
+                        <!-- Товар 1 -->
+                        <div class="cart-item p-4 border-b border-gray-200 transition duration-300" data-id="1">
+                            <div class="grid grid-cols-12 gap-4 items-center">
+                                <div class="col-span-6 flex items-center">
+                                    <img src="https://via.placeholder.com/80" alt="Товар" class="w-16 h-16 object-cover rounded mr-4">
+                                    <div>
+                                        <h3 class="font-medium text-gray-800">Смартфон XYZ Pro</h3>
+                                        <p class="text-sm text-gray-500">Чёрный, 128 ГБ</p>
+                                    </div>
+                                </div>
+                                <div class="col-span-2 text-center">
+                                    <span class="price font-medium">32 990</span> ₽
+                                </div>
+                                <div class="col-span-2 flex justify-center items-center">
+                                    <button class="quantity-btn w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center" onclick="changeQuantity(this, -1)">
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    <input type="number" value="1" min="1" class="quantity mx-2 w-12 text-center border border-gray-300 rounded py-1" onchange="updateItemTotal(this)">
+                                    <button class="quantity-btn w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center" onclick="changeQuantity(this, 1)">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <div class="col-span-2 flex justify-between items-center">
+                                    <span class="item-total font-medium text-right">32 990</span> ₽
+                                    <button class="remove-btn ml-2 text-gray-400 hover:text-red-500 transition" onclick="removeItem(this)">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Товар 2 -->
+                        <div class="cart-item p-4 border-b border-gray-200 transition duration-300" data-id="2">
+                            <div class="grid grid-cols-12 gap-4 items-center">
+                                <div class="col-span-6 flex items-center">
+                                    <img src="https://via.placeholder.com/80" alt="Товар" class="w-16 h-16 object-cover rounded mr-4">
+                                    <div>
+                                        <h3 class="font-medium text-gray-800">Наушники Wireless</h3>
+                                        <p class="text-sm text-gray-500">Белые, Bluetooth</p>
+                                    </div>
+                                </div>
+                                <div class="col-span-2 text-center">
+                                    <span class="price font-medium">7 490</span> ₽
+                                </div>
+                                <div class="col-span-2 flex justify-center items-center">
+                                    <button class="quantity-btn w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center" onclick="changeQuantity(this, -1)">
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    <input type="number" value="1" min="1" class="quantity mx-2 w-12 text-center border border-gray-300 rounded py-1" onchange="updateItemTotal(this)">
+                                    <button class="quantity-btn w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center" onclick="changeQuantity(this, 1)">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <div class="col-span-2 flex justify-between items-center">
+                                    <span class="item-total font-medium text-right">7 490</span> ₽
+                                    <button class="remove-btn ml-2 text-gray-400 hover:text-red-500 transition" onclick="removeItem(this)">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Пустая корзина (скрыто по умолчанию) -->
+                    <div id="empty-cart" class="hidden p-8 text-center">
+                        <i class="fas fa-shopping-cart text-5xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-600 mb-2">Ваша корзина пуста</h3>
+                        <p class="text-gray-500 mb-4">Добавьте товары, чтобы продолжить покупки</p>
+                        <a href="#" class="inline-block px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition">Вернуться к покупкам</a>
+                    </div>
+                </div>
+
+                <!-- Купон на скидку -->
+                <div class="mt-6 bg-white rounded-lg shadow-md p-4">
+                    <h3 class="font-medium text-gray-800 mb-3">Есть промокод?</h3>
+                    <div class="flex">
+                        <input type="text" placeholder="Введите промокод" class="flex-grow border border-gray-300 rounded-l-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button class="bg-indigo-600 text-white px-6 py-2 rounded-r-md hover:bg-indigo-700 transition">Применить</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Боковая панель с итогами -->
+            <div>
+                <div class="bg-white rounded-lg shadow-md p-6 sticky top-4">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">Итог заказа</h2>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Товары (2)</span>
+                            <span id="subtotal">40 480</span> ₽
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Скидка</span>
+                            <span id="discount">0</span> ₽
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Доставка</span>
+                            <span>Бесплатно</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4 mb-6">
+                        <div class="flex justify-between font-bold text-lg text-gray-800">
+                            <span>Итого</span>
+                            <span id="total">40 480</span> ₽
+                        </div>
+                    </div>
+
+                    <button class="checkout-btn w-full bg-indigo-600 text-white py-3 rounded-md font-medium hover:bg-indigo-700 transition flex items-center justify-center">
+                        <i class="fas fa-credit-card mr-2"></i> Оформить заказ
+                    </button>
+
+                    <p class="text-xs text-gray-500 mt-4 text-center">
+                        Нажимая кнопку, вы соглашаетесь с условиями
+                        <a href="#" class="text-indigo-600 hover:underline">Пользовательского соглашения</a>
+                    </p>
+                </div>
+
+                <!-- Гарантии -->
+                <div class="mt-6 bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-start mb-4">
+                        <div class="text-indigo-600 mr-3 mt-1">
+                            <i class="fas fa-shield-alt text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-800 mb-1">Безопасные платежи</h3>
+                            <p class="text-sm text-gray-500">Ваши данные защищены</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="text-indigo-600 mr-3 mt-1>
+                            <i class="fas fa-undo-alt text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-800 mb-1">Легкий возврат</h3>
+                            <p class="text-sm text-gray-500">14 дней на возврат товара</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Функция изменения количества товара
+        function changeQuantity(button, change) {
+            const quantityInput = button.parentElement.querySelector('.quantity');
+            let newValue = parseInt(quantityInput.value) + change;
+
+            if (newValue < 1) newValue = 1;
+            quantityInput.value = newValue;
+
+            updateItemTotal(quantityInput);
+        }
+
+        // Функция обновления суммы за товар
+        function updateItemTotal(input) {
+            const item = input.closest('.cart-item');
+            const price = parseInt(item.querySelector('.price').textContent.replace(/\s/g, ''));
+            const quantity = parseInt(input.value);
+            const totalElement = item.querySelector('.item-total');
+
+            const itemTotal = price * quantity;
+            totalElement.textContent = itemTotal.toLocaleString('ru-RU');
+
+            updateCartTotals();
+        }
+
+        // Функция удаления товара
+        function removeItem(button) {
+            const item = button.closest('.cart-item');
+            item.remove();
+
+            updateCartTotals();
+
+            // Проверяем, пуста ли корзина
+            const cartItems = document.querySelectorAll('.cart-item');
+            if (cartItems.length === 0) {
+                document.getElementById('empty-cart').classList.remove('hidden');
+                document.getElementById('cart-items').classList.add('hidden');
+            }
+        }
+
+        // Функция обновления итоговых сумм
+        function updateCartTotals() {
+            let subtotal = 0;
+            const items = document.querySelectorAll('.cart-item');
+
+            items.forEach(item => {
+                const itemTotal = parseInt(item.querySelector('.item-total').textContent.replace(/\s/g, ''));
+                subtotal += itemTotal;
+            });
+
+            document.getElementById('subtotal').textContent = subtotal.toLocaleString('ru-RU');
+            document.getElementById('total').textContent = subtotal.toLocaleString('ru-RU');
+
+            // Обновляем количество товаров в итогах
+            const itemCount = items.length;
+            document.querySelector('.flex.justify-between.text-gray-600 span').textContent = `Товары (${itemCount})`;
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartTotals();
+        });
+    </script>
+</body>
+</html>

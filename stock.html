@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Акция недели - Беспроводные наушники в подарок!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+        }
+        .headphone-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Promo Banner -->
+    <div class="gradient-bg text-white py-12 px-4 sm:px-6 lg:px-8 rounded-xl shadow-2xl max-w-6xl mx-auto my-10 overflow-hidden relative">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10">
+            <div class="absolute top-10 left-20 w-32 h-32 rounded-full bg-pink-500"></div>
+            <div class="absolute bottom-10 right-20 w-40 h-40 rounded-full bg-blue-500"></div>
+            <div class="absolute top-1/3 right-1/4 w-24 h-24 rounded-full bg-purple-500"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between">
+            <!-- Text content -->
+            <div class="lg:w-1/2 mb-8 lg:mb-0 lg:pr-8">
+                <div class="flex items-center mb-4">
+                    <span class="bg-yellow-400 text-black font-bold px-3 py-1 rounded-full text-sm mr-3">АКЦИЯ НЕДЕЛИ</span>
+                    <span class="text-sm opacity-90">Только до конца недели</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">
+                    При покупке любого смартфона <span class="text-yellow-300">получите в подарок</span>
+                </h1>
+
+                <h2 class="text-2xl sm:text-3xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-headphones mr-3 text-pink-300"></i>
+                    Наушники QuantumSound Pro
+                </h2>
+
+                <div class="mb-6 space-y-3">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-300 mr-2"></i>
+                        <span>Беспроводные с технологией Bluetooth 5.2</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-300 mr-2"></i>
+                        <span>До 30 часов работы от одного заряда</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-300 mr-2"></i>
+                        <span>Активное шумоподавление</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-300 mr-2"></i>
+                        <span>Сенсорное управление</span>
+                    </div>
+                </div>
+
+                <button class="bg-white text-blue-600 hover:bg-blue-50 font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center">
+                    <i class="fas fa-shopping-cart mr-2"></i> Выбрать смартфон
+                </button>
+            </div>
+
+            <!-- Headphones image -->
+            <div class="lg:w-1/2 flex justify-center relative">
+                <div class="headphone-float relative">
+                    <img src="https://images.unsplash.com/photo-1590658268037-6bf12165ee8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                         alt="QuantumSound Pro беспроводные наушники"
+                         class="w-full max-w-md rounded-xl shadow-2xl border-8 border-white/20 pulse-animation">
+                    <div class="absolute -bottom-4 -right-4 bg-yellow-400 text-black font-bold px-4 py-2 rounded-full shadow-lg">
+                        <span class="text-xl">БЕСПЛАТНО</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Countdown timer -->
+        <div class="mt-8 bg-black/20 rounded-xl p-4 max-w-md mx-auto lg:mx-0 lg:ml-auto">
+            <h3 class="text-center lg:text-left text-lg font-semibold mb-3">До конца акции осталось:</h3>
+            <div class="flex justify-center lg:justify-start space-x-2">
+                <div class="bg-black/30 rounded-lg p-2 text-center w-16">
+                    <div class="text-2xl font-bold" id="days">00</div>
+                    <div class="text-xs opacity-80">дней</div>
+                </div>
+                <div class="bg-black/30 rounded-lg p-2 text-center w-16">
+                    <div class="text-2xl font-bold" id="hours">00</div>
+                    <div class="text-xs opacity-80">часов</div>
+                </div>
+                <div class="bg-black/30 rounded-lg p-2 text-center w-16">
+                    <div class="text-2xl font-bold" id="minutes">00</div>
+                    <div class="text-xs opacity-80">минут</div>
+                </div>
+                <div class="bg-black/30 rounded-lg p-2 text-center w-16">
+                    <div class="text-2xl font-bold" id="seconds">00</div>
+                    <div class="text-xs opacity-80">секунд</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date();
+            const endOfWeek = new Date();
+
+            // Set to end of week (Sunday 23:59:59)
+            endOfWeek.setDate(now.getDate() + (7 - now.getDay()));
+            endOfWeek.setHours(23, 59, 59, 0);
+
+            const diff = endOfWeek - now;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        // Update immediately and then every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Animation for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.classList.add('shadow-xl');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('shadow-xl');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ТехноМаркет - Магазин электроники</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .phone-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .active-page {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .sort-option.active {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        .nav-link.active {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="main.html" class="text-2xl font-bold text-blue-600 flex items-center">
+                    <i class="fas fa-laptop-code mr-2"></i>
+                    ТехноМаркет
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="main.html" class="text-gray-600 hover:text-blue-500">Главная</a>
+                <div class="relative inline-block group">
+                    <button class="text-gray-600 hover:text-blue-500">Каталог</button>
+                    <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded shadow-md opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200">
+                        <a href="phone.html" class="block px-4 py-2 hover:bg-gray-100">Смартфоны</a>
+                        <a href="laptops.html" class="block px-4 py-2 hover:bg-gray-100">Ноутбуки</a>
+                        <a href="tv.html" class="block px-4 py-2 hover:bg-gray-100">Телевизоры</a>
+                        <a href="dom.html" class="block px-4 py-2 hover:bg-gray-100">Бытовая техника</a>
+                        <a href="comp.html" class="block px-4 py-2 hover:bg-gray-100">Комплектующие</a>
+                    </div>
+                </div>
+                <a href="delivery.html" class="text-gray-600 hover:text-blue-500">Доставка</a>
+                <a href="#" class="text-gray-600 hover:text-blue-500">Контакты</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="login.html" class="text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-user"></i>
+                </a>
+                <a href="cart.html" class="text-gray-600 hover:text-blue-500 relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-3">
+        <div class="pt-4 flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-bold">Смартфоны</h2>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-600">Сортировать:</span>
+                <div class="flex space-x-2">
+                    <button onclick="sortPhones('price-asc')" class="sort-option px-3 py-1 rounded hover:bg-gray-100">По возрастанию цены</button>
+                    <button onclick="sortPhones('price-desc')" class="sort-option px-3 py-1 rounded hover:bg-gray-100">По убыванию цены</button>
+                    <button onclick="sortPhones('popular')" class="sort-option px-3 py-1 rounded hover:bg-gray-100 active">Популярные</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="phones-container">
+            <!-- Телефоны будут загружены здесь -->
+        </div>
+
+        <div class="flex justify-center mt-8">
+            <div class="flex space-x-2" id="pagination">
+                <!-- Пагинация будет загружена здесь -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                <p>© 2025 SmartShop. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Данные о смартфонах
+        const phones = [
+            { id: 1, name: 'iPhone 14 Pro', price: 99990, brand: 'Apple', image: 'https://m.media-amazon.com/images/I/61cwywLZR-L._AC_UF1000,1000_QL80_.jpg', popular: true },
+            { id: 2, name: 'Samsung Galaxy S23 Ultra', price: 89990, brand: 'Samsung', image: 'https://m.media-amazon.com/images/I/81RqB0oG-QL._AC_UF1000,1000_QL80_.jpg', popular: true },
+            { id: 3, name: 'Xiaomi 13 Pro', price: 69990, brand: 'Xiaomi', image: 'https://m.media-amazon.com/images/I/71WtB3vDAhL._AC_UF1000,1000_QL80_.jpg', popular: false },
+            { id: 4, name: 'Google Pixel 7 Pro', price: 75990, brand: 'Google', image: 'https://m.media-amazon.com/images/I/71Z8UOQZJKL._AC_UF1000,1000_QL80_.jpg', popular: true },
+            { id: 5, name: 'OnePlus 11', price: 54990, brand: 'OnePlus', image: 'https://m.media-amazon.com/images/I/61amb0CfMGL._AC_UF1000,1000_QL80_.jpg', popular: false },
+            { id: 6, name: 'iPhone 13', price: 65990, brand: 'Apple', image: 'https://m.media-amazon.com/images/I/61l9ppRiqTL._AC_UF1000,1000_QL80_.jpg', popular: true },
+            { id: 7, name: 'Samsung Galaxy A54', price: 34990, brand: 'Samsung', image: 'https://m.media-amazon.com/images/I/71O5YJSs-QL._AC_UF1000,1000_QL80_.jpg', popular: false },
+            { id: 8, name: 'Xiaomi Redmi Note 12 Pro', price: 27990, brand: 'Xiaomi', image: 'https://m.media-amazon.com/images/I/71geVxuJOhL._AC_UF1000,1000_QL80_.jpg', popular: true },
+            { id: 9, name: 'Realme GT Neo 3', price: 32990, brand: 'Realme', image: 'https://m.media-amazon.com/images/I/61iJk-Kpo2L._AC_UF1000,1000_QL80_.jpg', popular: false },
+            { id: 10, name: 'Nothing Phone (1)', price: 39990, brand: 'Nothing', image: 'https://m.media-amazon.com/images/I/61WgMu5qOEL._AC_UF1000,1000_QL80_.jpg', popular: true },
+            { id: 11, name: 'Huawei P60 Pro', price: 79990, brand: 'Huawei', image: 'https://m.media-amazon.com/images/I/71QdG8h0bIL._AC_UF1000,1000_QL80_.jpg', popular: false },
+            { id: 12, name: 'Asus ROG Phone 7', price: 89990, brand: 'Asus', image: 'https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg', popular: true },
+            { id: 13, name: 'Sony Xperia 1 V', price: 89990, brand: 'Sony', image: 'https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg', popular: false },
+            { id: 14, name: 'Vivo X90 Pro', price: 79990, brand: 'Vivo', image: 'https://m.media-amazon.com/images/I/71QdG8h0bIL._AC_UF1000,1000_QL80_.jpg', popular: true },
+            { id: 15, name: 'Oppo Find X6 Pro', price: 84990, brand: 'Oppo', image: 'https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg', popular: false },
+            { id: 16, name: 'Honor Magic 5 Pro', price: 69990, brand: 'Honor', image: 'https://m.media-amazon.com/images/I/71QdG8h0bIL._AC_UF1000,1000_QL80_.jpg', popular: true },
+            { id: 17, name: 'Motorola Edge 40 Pro', price: 59990, brand: 'Motorola', image: 'https://m.media-amazon.com/images/I/71YHjVXyR0L._AC_UF1000,1000_QL80_.jpg', popular: false },
+            { id: 18, name: 'Nokia X30', price: 39990, brand: 'Nokia', image: 'https://m.media-amazon.com/images/I/71QdG8h0bIL._AC_UF1000,1000_QL80_.jpg', popular: true }
+        ];
+
+        // Переменные для пагинации
+        let currentPage = 1;
+        const phonesPerPage = 6;
+        let currentSort = 'popular';
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePhoneList();
+            updatePagination();
+            document.querySelector('.sort-option:nth-child(3)').classList.add('active');
+        });
+
+        // Функция для отображения телефонов
+        function updatePhoneList() {
+            const container = document.getElementById('phones-container');
+            container.innerHTML = '';
+
+            // Сортировка телефонов
+            let sortedPhones = [...phones];
+            if (currentSort === 'price-asc') {
+                sortedPhones.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'price-desc') {
+                sortedPhones.sort((a, b) => b.price - a.price);
+            } else if (currentSort === 'popular') {
+                sortedPhones.sort((a, b) => b.popular - a.popular);
+            }
+
+            // Пагинация
+            const startIndex = (currentPage - 1) * phonesPerPage;
+            const endIndex = startIndex + phonesPerPage;
+            const paginatedPhones = sortedPhones.slice(startIndex, endIndex);
+
+            // Отображение телефонов
+            paginatedPhones.forEach(phone => {
+                const phoneCard = document.createElement('div');
+                phoneCard.className = 'phone-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300';
+                phoneCard.innerHTML = `
+                    <div class="relative pb-3/4">
+                        <img src="${phone.image}" alt="${phone.name}" class="w-full h-64 object-contain p-4">
+                        ${phone.popular ? '<span class="absolute top-2 right-2 bg-yellow-400 text-xs font-bold px-2 py-1 rounded">Популярный</span>' : ''}
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg">${phone.name}</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">${phone.brand}</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Высокопроизводительный смартфон с отличной камерой</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-xl">${phone.price.toLocaleString('ru-RU')} ₽</span>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">В корзину</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(phoneCard);
+            });
+        }
+
+        // Функция для обновления пагинации
+        function updatePagination() {
+            const totalPages = Math.ceil(phones.length / phonesPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            // Кнопка "Назад"
+            const prevButton = document.createElement('button');
+            prevButton.className = `px-4 py-2 rounded-lg border ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'hover:bg-gray-100'}`;
+            prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevButton.disabled = currentPage === 1;
+            prevButton.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePhoneList();
+                    updatePagination();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+            pagination.appendChild(prevButton);
+
+            // Номера страниц
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.className = `px-4 py-2 rounded-lg border ${currentPage === i ? 'active-page' : 'hover:bg-gray-100'}`;
+                pageButton.textContent = i;
+                pageButton.onclick = () => {
+                    currentPage = i;
+                    updatePhoneList();
+                    updatePagination();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+                pagination.appendChild(pageButton);
+            }
+
+            // Кнопка "Вперед"
+            const nextButton = document.createElement('button');
+            nextButton.className = `px-4 py-2 rounded-lg border ${currentPage === totalPages ? 'text-gray-400 cursor-not-allowed' : 'hover:bg-gray-100'}`;
+            nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePhoneList();
+                    updatePagination();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+            pagination.appendChild(nextButton);
+        }
+
+        // Функция для сортировки телефонов
+        function sortPhones(sortType) {
+            currentSort = sortType;
+            currentPage = 1;
+
+            // Обновляем активную кнопку сортировки
+            document.querySelectorAll('.sort-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            updatePhoneList();
+            updatePagination();
+        }
+    </script>
+</body>
+</html>

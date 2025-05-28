@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Комплектующие для ПК</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .active-tab {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .price-sort.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Шапка -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="main.html" class="text-2xl font-bold text-blue-600 flex items-center">
+                    <i class="fas fa-laptop-code mr-2"></i>
+                    ТехноМаркет
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="main.html" class="text-gray-600 hover:text-blue-500">Главная</a>
+                <div class="relative inline-block group">
+                    <button class="text-gray-600 hover:text-blue-500">Каталог</button>
+                    <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded shadow-md opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200">
+                        <a href="phone.html" class="block px-4 py-2 hover:bg-gray-100">Смартфоны</a>
+                        <a href="laptops.html" class="block px-4 py-2 hover:bg-gray-100">Ноутбуки</a>
+                        <a href="tv.html" class="block px-4 py-2 hover:bg-gray-100">Телевизоры</a>
+                        <a href="dom.html" class="block px-4 py-2 hover:bg-gray-100">Бытовая техника</a>
+                        <a href="comp.html" class="block px-4 py-2 hover:bg-gray-100">Комплектующие</a>
+                    </div>
+                </div>
+                <a href="delivery.html" class="text-gray-600 hover:text-blue-500">Доставка</a>
+                <a href="#" class="text-gray-600 hover:text-blue-500">Контакты</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="login.html" class="text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-user"></i>
+                </a>
+                <a href="cart.html" class="text-gray-600 hover:text-blue-500 relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-4">
+        <!-- Навигация по категориям -->
+        <div class="flex justify-left mb-10 border-b border-gray-200">
+            <button onclick="showCategory('processors')" class="px-6 py-3 mx-2 text-lg font-medium active-tab">Процессоры</button>
+            <button onclick="showCategory('video-cards')" class="px-6 py-3 mx-2 text-lg font-medium text-gray-600 hover:text-blue-600">Видеокарты</button>
+            <button onclick="showCategory('memory')" class="px-6 py-3 mx-2 text-lg font-medium text-gray-600 hover:text-blue-600">Память</button>
+        </div>
+
+        <!-- Сортировка -->
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-semibold" id="category-title">Процессоры</h2>
+            <div class="flex space-x-2">
+                <button onclick="sortByPrice('asc')" class="price-sort px-4 py-2 border border-gray-300 rounded-md hover:bg-blue-50">Дешевле</button>
+                <button onclick="sortByPrice('desc')" class="price-sort px-4 py-2 border border-gray-300 rounded-md hover:bg-blue-50">Дороже</button>
+            </div>
+        </div>
+
+        <!-- Контент страницы -->
+        <div id="content">
+            <!-- Процессоры (по умолчанию) -->
+            <div id="processors" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Карточки будут заполнены JavaScript -->
+            </div>
+
+            <!-- Видеокарты (скрыто) -->
+            <div id="video-cards" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Карточки будут заполнены JavaScript -->
+            </div>
+
+            <!-- Память (скрыто) -->
+            <div id="memory" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Карточки будут заполнены JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Данные о товарах
+        const products = {
+            processors: [
+                {
+                    id: 1,
+                    name: 'Intel Core i9-13900K',
+                    description: '24 ядра (8P+16E), 32 потока, до 5.8 ГГц, LGA 1700',
+                    price: 49990,
+                    image: 'https://m.media-amazon.com/images/I/61H6Wz0qAEL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 2,
+                    name: 'AMD Ryzen 9 7950X',
+                    description: '16 ядер, 32 потока, до 5.7 ГГц, AM5',
+                    price: 45990,
+                    image: 'https://m.media-amazon.com/images/I/61H6Wz0qAEL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 3,
+                    name: 'Intel Core i7-13700K',
+                    description: '16 ядер (8P+8E), 24 потока, до 5.4 ГГц, LGA 1700',
+                    price: 32990,
+                    image: 'https://m.media-amazon.com/images/I/61H6Wz0qAEL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 4,
+                    name: 'AMD Ryzen 7 7700X',
+                    description: '8 ядер, 16 потоков, до 5.4 ГГц, AM5',
+                    price: 27990,
+                    image: 'https://m.media-amazon.com/images/I/61H6Wz0qAEL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 5,
+                    name: 'Intel Core i5-13600K',
+                    description: '14 ядер (6P+8E), 20 потоков, до 5.1 ГГц, LGA 1700',
+                    price: 22990,
+                    image: 'https://m.media-amazon.com/images/I/61H6Wz0qAEL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 6,
+                    name: 'AMD Ryzen 5 7600X',
+                    description: '6 ядер, 12 потоков, до 5.3 ГГц, AM5',
+                    price: 18990,
+                    image: 'https://m.media-amazon.com/images/I/61H6Wz0qAEL._AC_SL1500_.jpg'
+                }
+            ],
+            'video-cards': [
+                {
+                    id: 7,
+                    name: 'NVIDIA RTX 4090',
+                    description: '24GB GDDR6X, 16384 ядер, 2520 МГц',
+                    price: 159990,
+                    image: 'https://m.media-amazon.com/images/I/71W5m+0nwQL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 8,
+                    name: 'AMD RX 7900 XTX',
+                    description: '24GB GDDR6, 6144 ядер, 2500 МГц',
+                    price: 89990,
+                    image: 'https://m.media-amazon.com/images/I/71W5m+0nwQL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 9,
+                    name: 'NVIDIA RTX 4080',
+                    description: '16GB GDDR6X, 9728 ядер, 2505 МГц',
+                    price: 89990,
+                    image: 'https://m.media-amazon.com/images/I/71W5m+0nwQL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 10,
+                    name: 'AMD RX 7900 XT',
+                    description: '20GB GDDR6, 5376 ядер, 2400 МГц',
+                    price: 69990,
+                    image: 'https://m.media-amazon.com/images/I/71W5m+0nwQL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 11,
+                    name: 'NVIDIA RTX 4070 Ti',
+                    description: '12GB GDDR6X, 7680 ядер, 2610 МГц',
+                    price: 64990,
+                    image: 'https://m.media-amazon.com/images/I/71W5m+0nwQL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 12,
+                    name: 'AMD RX 7800 XT',
+                    description: '16GB GDDR6, 3840 ядер, 2300 МГц',
+                    price: 49990,
+                    image: 'https://m.media-amazon.com/images/I/71W5m+0nwQL._AC_SL1500_.jpg'
+                }
+            ],
+            memory: [
+                {
+                    id: 13,
+                    name: 'Kingston Fury DDR5 32GB',
+                    description: '32GB (2x16GB) DDR5 6000 МГц, CL36',
+                    price: 12990,
+                    image: 'https://m.media-amazon.com/images/I/71Hn+n5rQVL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 14,
+                    name: 'Corsair Vengeance DDR5 32GB',
+                    description: '32GB (2x16GB) DDR5 5600 МГц, CL36',
+                    price: 11990,
+                    image: 'https://m.media-amazon.com/images/I/71Hn+n5rQVL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 15,
+                    name: 'G.Skill Trident Z5 DDR5 32GB',
+                    description: '32GB (2x16GB) DDR5 6400 МГц, CL32',
+                    price: 14990,
+                    image: 'https://m.media-amazon.com/images/I/71Hn+n5rQVL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 16,
+                    name: 'Crucial DDR4 32GB',
+                    description: '32GB (2x16GB) DDR4 3200 МГц, CL22',
+                    price: 6990,
+                    image: 'https://m.media-amazon.com/images/I/71Hn+n5rQVL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 17,
+                    name: 'HyperX Fury DDR4 16GB',
+                    description: '16GB (2x8GB) DDR4 3200 МГц, CL16',
+                    price: 4990,
+                    image: 'https://m.media-amazon.com/images/I/71Hn+n5rQVL._AC_SL1500_.jpg'
+                },
+                {
+                    id: 18,
+                    name: 'Corsair Dominator DDR4 64GB',
+                    description: '64GB (4x16GB) DDR4 3600 МГц, CL18',
+                    price: 21990,
+                    image: 'https://m.media-amazon.com/images/I/71Hn+n5rQVL._AC_SL1500_.jpg'
+                }
+            ]
+        };
+
+        // Текущая категория и сортировка
+        let currentCategory = 'processors';
+        let currentSort = 'default';
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts(currentCategory);
+            updateActiveTab();
+        });
+
+        // Показать выбранную категорию
+        function showCategory(category) {
+            currentCategory = category;
+            document.getElementById('category-title').textContent = getCategoryTitle(category);
+
+            // Скрыть все категории
+            document.querySelectorAll('#content > div').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Показать выбранную категорию
+            document.getElementById(category).classList.remove('hidden');
+
+            // Обновить активную вкладку
+            updateActiveTab();
+
+            // Перерисовать продукты
+            renderProducts(category);
+        }
+
+        // Обновить активную вкладку
+        function updateActiveTab() {
+            document.querySelectorAll('[onclick^="showCategory"]').forEach(button => {
+                if (button.getAttribute('onclick').includes(currentCategory)) {
+                    button.classList.add('active-tab');
+                    button.classList.remove('text-gray-600', 'hover:text-blue-600');
+                } else {
+                    button.classList.remove('active-tab');
+                    button.classList.add('text-gray-600', 'hover:text-blue-600');
+                }
+            });
+        }
+
+        // Получить название категории для заголовка
+        function getCategoryTitle(category) {
+            const titles = {
+                'processors': 'Процессоры',
+                'video-cards': 'Видеокарты',
+                'memory': 'Оперативная память'
+            };
+            return titles[category] || category;
+        }
+
+        // Сортировка по цене
+        function sortByPrice(order) {
+            currentSort = order;
+
+            // Обновить активные кнопки сортировки
+            document.querySelectorAll('.price-sort').forEach(button => {
+                if (button.getAttribute('onclick').includes(order)) {
+                    button.classList.add('active');
+                    button.classList.remove('border-gray-300', 'hover:bg-blue-50');
+                } else {
+                    button.classList.remove('active');
+                    button.classList.add('border-gray-300', 'hover:bg-blue-50');
+                }
+            });
+
+            // Перерисовать продукты с новой сортировкой
+            renderProducts(currentCategory);
+        }
+
+        // Форматирование цены
+        function formatPrice(price) {
+            return new Intl.NumberFormat('ru-RU', {
+                style: 'currency',
+                currency: 'RUB',
+                maximumFractionDigits: 0
+            }).format(price);
+        }
+
+        // Отрисовка продуктов
+        function renderProducts(category) {
+            const container = document.getElementById(category);
+            container.innerHTML = '';
+
+            // Получить продукты для категории
+            let productsToRender = [...products[category]];
+
+            // Применить сортировку
+            if (currentSort === 'asc') {
+                productsToRender.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'desc') {
+                productsToRender.sort((a, b) => b.price - a.price);
+            }
+
+            // Создать карточки продуктов
+            productsToRender.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg overflow-hidden shadow-md card transition-all duration-300';
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-contain p-4 bg-gray-100">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">${product.name}</h3>
+                        <p class="text-gray-600 mb-4">${product.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-blue-600">${formatPrice(product.price)}</span>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                                В корзину
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>

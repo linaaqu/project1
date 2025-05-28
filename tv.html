@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ТехноМаркет - Магазин телевизоров</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .active-page {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .filter-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Шапка -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="main.html" class="text-2xl font-bold text-blue-600 flex items-center">
+                    <i class="fas fa-laptop-code mr-2"></i>
+                    ТехноМаркет
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="main.html" class="text-gray-600 hover:text-blue-500">Главная</a>
+                <div class="relative inline-block group">
+                    <button class="text-gray-600 hover:text-blue-500">Каталог</button>
+                    <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded shadow-md opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200">
+                        <a href="phone.html" class="block px-4 py-2 hover:bg-gray-100">Смартфоны</a>
+                        <a href="laptops.html" class="block px-4 py-2 hover:bg-gray-100">Ноутбуки</a>
+                        <a href="tv.html" class="block px-4 py-2 hover:bg-gray-100">Телевизоры</a>
+                        <a href="dom.html" class="block px-4 py-2 hover:bg-gray-100">Бытовая техника</a>
+                        <a href="comp.html" class="block px-4 py-2 hover:bg-gray-100">Комплектующие</a>
+                    </div>
+                </div>
+                <a href="delivery.html" class="text-gray-600 hover:text-blue-500">Доставка</a>
+                <a href="#" class="text-gray-600 hover:text-blue-500">Контакты</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="login.html" class="text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-user"></i>
+                </a>
+                <a href="cart.html" class="text-gray-600 hover:text-blue-500 relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+<!-- Навигационные вкладки -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex space-x-8 py-4 pb-4">
+                <button class="filter-btn px-3 py-1 border rounded-full hover:bg-gray-100 transition" data-filter="all">Все</button>
+                <button class="filter-btn px-3 py-1 border rounded-full hover:bg-gray-100 transition" data-filter="samsung">Samsung</button>
+                <button class="filter-btn px-3 py-1 border rounded-full hover:bg-gray-100 transition" data-filter="lg">LG</button>
+                <button class="filter-btn px-3 py-1 border rounded-full hover:bg-gray-100 transition" data-filter="sony">Sony</button>
+                <button class="filter-btn px-3 py-1 border rounded-full hover:bg-gray-100 transition" data-filter="philips">Philips</button>
+                <button class="filter-btn px-3 py-1 border rounded-full hover:bg-gray-100 transition" data-filter="xiaomi">Xiaomi</button>
+                <button class="filter-btn px-3 py-1 border rounded-full hover:bg-gray-100 transition" data-filter="tcl">TCL</button>
+                <button class="filter-btn px-3 py-1 border rounded-full hover:bg-gray-100 transition" data-filter="hisense">Hisense</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Фильтры и сортировка -->
+        <div class="text-right shadow-sm">
+            <div class="pb-6">
+                <label for="sort" class="text-lg font-semibold mr-2">Сортировка:</label>
+                <select id="sort" class="border rounded px-3 py-1">
+                    <option value="default">По умолчанию</option>
+                    <option value="price-asc">По возрастанию цены</option>
+                    <option value="price-desc">По убыванию цены</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Список товаров -->
+        <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Товары будут загружены через JavaScript -->
+        </div>
+
+        <!-- Пагинация -->
+        <div class="flex justify-center mt-8">
+            <div class="flex space-x-2">
+                <button class="page-btn px-4 py-2 border rounded hover:bg-gray-100" data-page="1">1</button>
+                <button class="page-btn px-4 py-2 border rounded hover:bg-gray-100" data-page="2">2</button>
+                <button class="page-btn px-4 py-2 border rounded hover:bg-gray-100" data-page="3">3</button>
+                <button class="page-btn px-4 py-2 border rounded hover:bg-gray-100" data-page="4">4</button>
+                <button class="page-btn px-4 py-2 border rounded hover:bg-gray-100" data-page="5">5</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2025 ТехноМаркет. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Данные о телевизорах
+        const products = [
+            // Page 1 (43-55")
+            { id: 1, name: 'Samsung QE55Q70BAU', brand: 'samsung', price: 64990, rating: 4.8, image: 'https://via.placeholder.com/300x200?text=Samsung+QE55Q70BAU', page: 1, description: 'QLED 55", 4K UHD, HDR10+, Smart TV' },
+            { id: 2, name: 'LG OLED55C2', brand: 'lg', price: 89990, rating: 4.9, image: 'https://via.placeholder.com/300x200?text=LG+OLED55C2', page: 1, description: 'OLED 55", 4K UHD, Dolby Vision, Smart TV' },
+            { id: 3, name: 'Sony KD-55X80K', brand: 'sony', price: 69990, rating: 4.7, image: 'https://via.placeholder.com/300x200?text=Sony+KD-55X80K', page: 1, description: 'LED 55", 4K HDR, Smart TV (Google TV)' },
+            { id: 4, name: 'Philips 55PUS8807', brand: 'philips', price: 75990, rating: 4.6, image: 'https://via.placeholder.com/300x200?text=Philips+55PUS8807', page: 1, description: 'LED 55", 4K UHD, Ambilight, Android TV' },
+            { id: 5, name: 'Xiaomi TV P1 55"', brand: 'xiaomi', price: 45990, rating: 4.5, image: 'https://via.placeholder.com/300x200?text=Xiaomi+TV+P1+55', page: 1, description: 'LED 55", 4K UHD, HDR10, Smart TV' },
+            { id: 6, name: 'TCL 55C725', brand: 'tcl', price: 49990, rating: 4.4, image: 'https://via.placeholder.com/300x200?text=TCL+55C725', page: 1, description: 'QLED 55", 4K UHD, HDR10, Smart TV' },
+            { id: 19, name: 'Hisense 55U7KQ', brand: 'hisense', price: 52990, rating: 4.5, image: 'https://via.placeholder.com/300x200?text=Hisense+55U7KQ', page: 1, description: 'ULED 55", 4K UHD, HDR10+, Smart TV' },
+            { id: 29, name: 'Samsung UE43AU7100U', brand: 'samsung', price: 34990, rating: 4.3, image: 'https://via.placeholder.com/300x200?text=Samsung+UE43AU7100U', page: 1, description: 'Crystal UHD 43", 4K HDR, Smart TV' },
+            { id: 30, name: 'Samsung QE50Q60BAU', brand: 'samsung', price: 49990, rating: 4.5, image: 'https://via.placeholder.com/300x200?text=Samsung+QE50Q60BAU', page: 1, description: 'QLED 50", 4K UHD, HDR10+, Smart TV' },
+
+            // Page 2 (65")
+            { id: 7, name: 'Samsung QE65QN90BAU', brand: 'samsung', price: 129990, rating: 4.9, image: 'https://via.placeholder.com/300x200?text=Samsung+QE65QN90BAU', page: 2, description: 'Neo QLED 65", 4K UHD, HDR10+, Smart TV' },
+            { id: 8, name: 'LG OLED65G2', brand: 'lg', price: 149990, rating: 5.0, image: 'https://via.placeholder.com/300x200?text=LG+OLED65G2', page: 2, description: 'OLED 65", 4K UHD, Dolby Vision, Smart TV' },
+            { id: 9, name: 'Sony KD-65A80K', brand: 'sony', price: 119990, rating: 4.8, image: 'https://via.placeholder.com/300x200?text=Sony+KD-65A80K', page: 2, description: 'OLED 65", 4K HDR, Smart TV (Google TV)' },
+            { id: 10, name: 'Philips 65OLED807', brand: 'philips', price: 109990, rating: 4.7, image: 'https://via.placeholder.com/300x200?text=Philips+65OLED807', page: 2, description: 'OLED 65", 4K UHD, Ambilight, Android TV' },
+            { id: 11, name: 'Xiaomi TV Q1 65"', brand: 'xiaomi', price: 69990, rating: 4.6, image: 'https://via.placeholder.com/300x200?text=Xiaomi+TV+Q1+65', page: 2, description: 'QLED 65", 4K UHD, HDR10+, Smart TV' },
+            { id: 12, name: 'TCL 65C825', brand: 'tcl', price: 79990, rating: 4.5, image: 'https://via.placeholder.com/300x200?text=TCL+65C825', page: 2, description: 'Mini LED 65", 4K UHD, HDR10+, Smart TV' },
+            { id: 20, name: 'Hisense 65U8KQ', brand: 'hisense', price: 89990, rating: 4.7, image: 'https://via.placeholder.com/300x200?text=Hisense+65U8KQ', page: 2, description: 'ULED 65", 4K UHD, HDR10+, Smart TV' },
+            { id: 31, name: 'Samsung UE65BU8000U', brand: 'samsung', price: 79990, rating: 4.6, image: 'https://via.placeholder.com/300x200?text=Samsung+UE65BU8000U', page: 2, description: 'Crystal UHD 65", 4K HDR, Smart TV' },
+            { id: 32, name: 'Samsung QE65LS03BAU', brand: 'samsung', price: 179990, rating: 4.8, image: 'https://via.placeholder.com/300x200?text=Samsung+QE65LS03BAU', page: 2, description: 'The Frame 65", QLED 4K, Art Mode' },
+
+            // Page 3 (75-77")
+            { id: 13, name: 'Samsung QE75Q70BAU', brand: 'samsung', price: 149990, rating: 4.8, image: 'https://via.placeholder.com/300x200?text=Samsung+QE75Q70BAU', page: 3, description: 'QLED 75", 4K UHD, HDR10+, Smart TV' },
+            { id: 14, name: 'LG OLED77G2', brand: 'lg', price: 199990, rating: 5.0, image: 'https://via.placeholder.com/300x200?text=LG+OLED77G2', page: 3, description: 'OLED 77", 4K UHD, Dolby Vision, Smart TV' },
+            { id: 15, name: 'Sony KD-75X85K', brand: 'sony', price: 139990, rating: 4.7, image: 'https://via.placeholder.com/300x200?text=Sony+KD-75X85K', page: 3, description: 'LED 75", 4K HDR, Smart TV (Google TV)' },
+            { id: 16, name: 'Philips 75PUS8807', brand: 'philips', price: 129990, rating: 4.6, image: 'https://via.placeholder.com/300x200?text=Philips+75PUS8807', page: 3, description: 'LED 75", 4K UHD, Ambilight, Android TV' },
+            { id: 17, name: 'Xiaomi TV Q1 75"', brand: 'xiaomi', price: 99990, rating: 4.7, image: 'https://via.placeholder.com/300x200?text=Xiaomi+TV+Q1+75', page: 3, description: 'QLED 75", 4K UHD, HDR10+, Smart TV' },
+            { id: 18, name: 'TCL 75C825', brand: 'tcl', price: 109990, rating: 4.6, image: 'https://via.placeholder.com/300x200?text=TCL+75C825', page: 3, description: 'Mini LED 75", 4K UHD, HDR10+, Smart TV' },
+            { id: 21, name: 'Hisense 75U7KQ', brand: 'hisense', price: 119990, rating: 4.6, image: 'https://via.placeholder.com/300x200?text=Hisense+75U7KQ', page: 3, description: 'ULED 75", 4K UHD, HDR10+, Smart TV' },
+            { id: 33, name: 'Samsung QE77S95BAU', brand: 'samsung', price: 249990, rating: 4.9, image: 'https://via.placeholder.com/300x200?text=Samsung+QE77S95BAU', page: 3, description: 'OLED 77", 4K UHD, HDR10+, Smart TV' },
+            { id: 34, name: 'Samsung QE75QN900AU', brand: 'samsung', price: 299990, rating: 5.0, image: 'https://via.placeholder.com/300x200?text=Samsung+QE75QN900AU', page: 3, description: '8K Neo QLED 75", HDR10+, Smart TV' },
+
+            // Page 4 (85")
+            { id: 22, name: 'Samsung QE85QN95B', brand: 'samsung', price: 249990, rating: 4.9, image: 'https://via.placeholder.com/300x200?text=Samsung+QE85QN95B', page: 4, description: 'Neo QLED 85", 4K UHD, HDR10+, Smart TV' },
+            { id: 23, name: 'LG OLED83G2', brand: 'lg', price: 299990, rating: 5.0, image: 'https://via.placeholder.com/300x200?text=LG+OLED83G2', page: 4, description: 'OLED 83", 4K UHD, Dolby Vision, Smart TV' },
+            { id: 24, name: 'Sony KD-85X85K', brand: 'sony', price: 199990, rating: 4.8, image: 'https://via.placeholder.com/300x200?text=Sony+KD-85X85K', page: 4, description: 'LED 85", 4K HDR, Smart TV (Google TV)' },
+            { id: 25, name: 'Philips 85PUS8807', brand: 'philips', price: 189990, rating: 4.7, image: 'https://via.placeholder.com/300x200?text=Philips+85PUS8807', page: 4, description: 'LED 85", 4K UHD, Ambilight, Android TV' },
+            { id: 26, name: 'Xiaomi TV Q1 85"', brand: 'xiaomi', price: 149990, rating: 4.7, image: 'https://via.placeholder.com/300x200?text=Xiaomi+TV+Q1+85', page: 4, description: 'QLED 85", 4K UHD, HDR10+, Smart TV' },
+            { id: 27, name: 'TCL 85C825', brand: 'tcl', price: 159990, rating: 4.6, image: 'https://via.placeholder.com/300x200?text=TCL+85C825', page: 4, description: 'Mini LED 85", 4K UHD, HDR10+, Smart TV' },
+            { id: 28, name: 'Hisense 85U9KQ', brand: 'hisense', price: 169990, rating: 4.8, image: 'https://via.placeholder.com/300x200?text=Hisense+85U9KQ', page: 4, description: 'ULED 85", 4K UHD, HDR10+, Smart TV' },
+            { id: 35, name: 'Samsung QE85QN800AU', brand: 'samsung', price: 329990, rating: 4.9, image: 'https://via.placeholder.com/300x200?text=Samsung+QE85QN800AU', page: 4, description: '8K Neo QLED 85", HDR10+, Smart TV' },
+
+            // Page 5 (Special Samsung models)
+            { id: 36, name: 'Samsung The Serif QE55LS01A', brand: 'samsung', price: 79990, rating: 4.7, image: 'https://via.placeholder.com/300x200?text=Samsung+The+Serif', page: 5, description: 'Дизайнерский QLED 55", 4K HDR, Smart TV' },
+            { id: 37, name: 'Samsung The Terrace QE55LST7TAU', brand: 'samsung', price: 149990, rating: 4.6, image: 'https://via.placeholder.com/300x200?text=Samsung+The+Terrace', page: 5, description: 'Уличный QLED 55", 4K HDR, влагозащита' },
+            { id: 38, name: 'Samsung S95B OLED 55"', brand: 'samsung', price: 109990, rating: 4.9, image: 'https://via.placeholder.com/300x200?text=Samsung+S95B+OLED', page: 5, description: 'OLED 55", 4K HDR, квантовые точки' },
+            { id: 39, name: 'Samsung QE98QN90A', brand: 'samsung', price: 499990, rating: 5.0, image: 'https://via.placeholder.com/300x200?text=Samsung+QE98QN90A', page: 5, description: 'Neo QLED 98", 4K HDR, Smart TV' },
+            { id: 40, name: 'Samsung QE43LS03BAU', brand: 'samsung', price: 89990, rating: 4.8, image: 'https://via.placeholder.com/300x200?text=Samsung+The+Frame+43', page: 5, description: 'The Frame 43", QLED 4K, Art Mode' },
+            { id: 41, name: 'Samsung QE65Q700TAU', brand: 'samsung', price: 119990, rating: 4.7, image: 'https://via.placeholder.com/300x200?text=Samsung+8K+Q700T', page: 5, description: 'QLED 65", 8K UHD, HDR10+, Smart TV' },
+            { id: 42, name: 'Samsung UE32T5300AU', brand: 'samsung', price: 24990, rating: 4.2, image: 'https://via.placeholder.com/300x200?text=Samsung+UE32T5300AU', page: 5, description: 'HD Ready 32", Smart TV' }
+        ];
+
+        // Текущие настройки
+        let currentPage = 1;
+        let currentFilter = 'all';
+        let currentSort = 'default';
+
+        // DOM элементы
+        const productsContainer = document.getElementById('products-container');
+        const pageButtons = document.querySelectorAll('.page-btn');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const sortSelect = document.getElementById('sort');
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateActivePageButton();
+            updateActiveFilterButton();
+        });
+
+        // Обработчики событий
+        pageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentPage = parseInt(button.dataset.page);
+                renderProducts();
+                updateActivePageButton();
+            });
+        });
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentFilter = button.dataset.filter;
+                currentPage = 1; // Сброс на первую страницу при изменении фильтра
+                renderProducts();
+                updateActivePageButton();
+                updateActiveFilterButton();
+            });
+        });
+
+        sortSelect.addEventListener('change', () => {
+            currentSort = sortSelect.value;
+            renderProducts();
+        });
+
+        // Функции
+        function renderProducts() {
+            // Фильтрация
+            let filteredProducts = products.filter(product => {
+                return (currentFilter === 'all' || product.brand === currentFilter) &&
+                       product.page === currentPage;
+            });
+
+            // Сортировка
+            if (currentSort === 'price-asc') {
+                filteredProducts.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'price-desc') {
+                filteredProducts.sort((a, b) => b.price - a.price);
+            }
+
+            // Очистка контейнера
+            productsContainer.innerHTML = '';
+
+            // Рендеринг товаров
+            if (filteredProducts.length === 0) {
+                productsContainer.innerHTML = `
+                    <div class="col-span-3 text-center py-10">
+                        <i class="fas fa-tv text-5xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-semibold">Товары не найдены</h3>
+                        <p class="text-gray-500">Попробуйте изменить фильтры или перейти на другую страницу</p>
+                    </div>
+                `;
+            } else {
+                filteredProducts.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300';
+                    productCard.innerHTML = `
+                        <div class="relative">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-yellow-400 text-blue-800 px-2 py-1 rounded-full text-xs font-bold">
+                                ${product.rating} <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">${product.name}</h3>
+                            <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-xl">${formatPrice(product.price)} ₽</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                                    <i class="fas fa-shopping-cart mr-1"></i> Купить
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    productsContainer.appendChild(productCard);
+                });
+            }
+        }
+
+        function updateActivePageButton() {
+            pageButtons.forEach(button => {
+                if (parseInt(button.dataset.page) === currentPage) {
+                    button.classList.add('active-page');
+                } else {
+                    button.classList.remove('active-page');
+                }
+            });
+        }
+
+        function updateActiveFilterButton() {
+            filterButtons.forEach(button => {
+                if (button.dataset.filter === currentFilter) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доставка | ТехноМаркет</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .delivery-step:hover .step-icon {
+            transform: scale(1.1);
+            transition: all 0.3s ease;
+        }
+        .map-container {
+            height: 400px;
+            background-color: #f5f5f5;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .delivery-banner {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        .tab-active {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+<!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="main.html" class="text-2xl font-bold text-blue-600 flex items-center">
+                    <i class="fas fa-laptop-code mr-2"></i>
+                    ТехноМаркет
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="main.html" class="text-gray-600 hover:text-blue-500">Главная</a>
+                <a href="" class="text-gray-600 hover:text-blue-500">Каталог</a>
+                <a href="delivery.html" class="text-gray-600 hover:text-blue-500">Доставка</a>
+                <a href="#" class="text-gray-600 hover:text-blue-500">Контакты</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="login.html" class="text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-user"></i>
+                </a>
+                <a href="cart.html" class="text-gray-600 hover:text-blue-500 relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden bg-white px-4 py-2 hidden">
+            <a href="#" class="block py-2 text-gray-600 hover:text-blue-500">Акции</a>
+            <a href="#" class="block py-2 text-gray-600 hover:text-blue-500">Доставка</a>
+            <a href="#" class="block py-2 text-gray-600 hover:text-blue-500">Контакты</a>
+            <a href="#login" class="block py-2 text-gray-600 hover:text-blue-500">Войти</a>
+        </div>
+    </header>
+
+    <!-- Баннер доставки -->
+    <main class="container mx-auto px-4 py-6">
+        <section class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 md:p-10 text-white mb-8">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-4">Быстрая и надежная доставка техники</h1>
+                    <p class="text-lg md:text-xl mb-6 opacity-90">Мы доставляем ваши заказы по Брянску и области в кратчайшие сроки с гарантией сохранности</p>
+                    <div class="flex flex-wrap gap-3">
+                        <div class="bg-white bg-opacity-20 px-4 py-2 rounded-full flex items-center">
+                            <i class="fas fa-truck mr-2"></i>
+                            <span>Бесплатная доставка от 5000₽</span>
+                        </div>
+                        <div class="bg-white bg-opacity-20 px-4 py-2 rounded-full flex items-center">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>Доставка за 1-3 дня</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Основной контент -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Табы способов доставка -->
+        <div class="mb-12">
+            <div class="flex flex-wrap border-b border-gray-200 mb-6">
+                <button class="tab-active px-6 py-3 text-lg focus:outline-none">Курьерская доставка</button>
+                <button class="px-6 py-3 text-lg text-gray-600 hover:text-blue-600 focus:outline-none">Пункты выдачи</button>
+                <button class="px-6 py-3 text-lg text-gray-600 hover:text-blue-600 focus:outline-none">Самовывоз</button>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Информация о доставке -->
+                <div>
+                    <h2 class="text-2xl font-bold mb-6">Курьерская доставка по Брянску и области</h2>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Зона доставки</h3>
+                                <p class="text-gray-600">Доставка осуществляется по всему Брянску, а также в ближайшие районы Брянской области.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-clock text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Сроки доставки</h3>
+                                <p class="text-gray-600">Доставка осуществляется в течение 1-2 рабочих дней после подтверждения заказа. Возможна доставка в день заказа при оформлении до 12:00.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-wallet text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Стоимость доставки</h3>
+                                <p class="text-gray-600">
+                                    <span class="font-medium text-green-600">Бесплатно</span> при заказе от 5000₽<br>
+                                    До 5000₽ — 290₽ по Брянску, 390₽ по области
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0 text-yellow-500">
+                                <i class="fas fa-exclamation-circle text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    Курьер предварительно свяжется с вами за 30-60 минут до прибытия. Пожалуйста, будьте на связи в указанное время доставки.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Форма расчета доставки -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Рассчитать стоимость и срок доставка</h3>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2" for="city">Город</label>
+                        <div class="relative">
+                            <select id="city" class="block appearance-none w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                                <option>Брянск</option>
+                                <option>Москва</option>
+                                <option>Санкт-Петербург</option>
+                                <option>Казань</option>
+                                <option>Новосибирск</option>
+                                <option>Екатеринбург</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2" for="address">Адрес</label>
+                        <input type="text" id="address" class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-blue-500" placeholder="Улица, дом, квартира">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2" for="date">Дата доставки</label>
+                        <div class="relative">
+                            <input type="date" id="date" class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                        Рассчитать стоимость
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карта зоны доставки -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold mb-6">Зона доставки по Брянску и области</h2>
+            <div class="map-container">
+                <div class="h-full flex items-center justify-center">
+                    <div class="text-center">
+                        <i class="fas fa-map-marked-alt text-5xl text-gray-400 mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-600">Карта зоны доставки</h3>
+                        <p class="text-gray-500 mt-2">Здесь будет интерактивная карта с обозначением зон доставки</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Как работает доставка -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold mb-8 text-center">Как работает наша доставка</h2>
+
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="delivery-step bg-white p-6 rounded-lg shadow-sm text-center">
+                    <div class="step-icon bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shopping-cart text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Оформление заказа</h3>
+                    <p class="text-gray-600">Вы оформляете заказ на сайте или по телефону</p>
+                </div>
+
+                <div class="delivery-step bg-white p-6 rounded-lg shadow-sm text-center">
+                    <div class="step-icon bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-phone-alt text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Подтверждение</h3>
+                    <p class="text-gray-600">Менеджер связывается для подтверждения заказа</p>
+                </div>
+
+                <div class="delivery-step bg-white p-6 rounded-lg shadow-sm text-center">
+                    <div class="step-icon bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-truck text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Доставка</h3>
+                    <p class="text-gray-600">Курьер доставляет заказ в удобное для вас время</p>
+                </div>
+
+                <div class="delivery-step bg-white p-6 rounded-lg shadow-sm text-center">
+                    <div class="step-icon bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check-circle text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Получение</h3>
+                    <p class="text-gray-600">Вы проверяете и принимаете товар</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Частые вопросы -->
+        <div>
+            <h2 class="text-2xl font-bold mb-6">Частые вопросы о доставке</h2>
+
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="border-b border-gray-200">
+                    <button class="w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 focus:outline-none">
+                        <span class="font-medium text-lg">Как узнать точное время доставки?</span>
+                        <i class="fas fa-chevron-down text-blue-600"></i>
+                    </button>
+                    <div class="px-6 pb-6 hidden">
+                        <p class="text-gray-600">Курьер свяжется с вами за 30-60 минут до прибытия, чтобы согласовать точное время доставки. Вы также можете уточнить примерное время у нашего менеджера при подтверждении заказа.</p>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-200">
+                    <button class="w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 focus:outline-none">
+                        <span class="font-medium text-lg">Можно ли изменить адрес доставки после оформления заказа?</span>
+                        <i class="fas fa-chevron-down text-blue-600"></i>
+                    </button>
+                    <div class="px-6 pb-6 hidden">
+                        <p class="text-gray-600">Да, вы можете изменить адрес доставки, позвонив нашему менеджеру. Если курьер уже выехал по первоначальному адресу, может взиматься дополнительная плата за изменение маршрута.</p>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-200">
+                    <button class="w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 focus:outline-none">
+                        <span class="font-medium text-lg">Что делать, если я не смогу принять заказ в назначенное время?</span>
+                        <i class="fas fa-chevron-down text-blue-600"></i>
+                    </button>
+                    <div class="px-6 pb-6 hidden">
+                        <p class="text-gray-600">Пожалуйста, заранее сообщите нам об этом по телефону +7 (4832) 12-34-56. Мы перенесём доставку на удобное для вас время. При повторной доставке может взиматься дополнительная плата.</p>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-200">
+                    <button class="w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 focus:outline-none">
+                        <span class="font-medium text-lg">Какие районы Брянской области вы обслуживаете?</span>
+                        <i class="fas fa-chevron-down text-blue-600"></i>
+                    </button>
+                    <div class="px-6 pb-6 hidden">
+                        <p class="text-gray-600">Мы доставляем заказы в следующие районы: Брянский, Дятьковский, Жуковский, Карачевский, Навлинский, Сельцовский, Суземский, Трубчевский, Унечский, а также в другие близлежащие населенные пункты. Уточнить возможность доставки в ваш населенный пункт можно у менеджера.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Подвал (удален по запросу) -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <!-- Пустой футер -->
+        </div>
+    </footer>
+
+    <script>
+        // Анимация аккордеона
+        document.querySelectorAll('.border-b button').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+
+                if (content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    content.classList.add('hidden');
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+
+        // Переключение табов
+        document.querySelectorAll('.border-b button').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.border-b button').forEach(t => {
+                    t.classList.remove('tab-active');
+                    t.classList.add('text-gray-600');
+                    t.classList.remove('text-blue-600');
+                });
+
+                tab.classList.add('tab-active');
+                tab.classList.remove('text-gray-600');
+                tab.classList.add('text-blue-600');
+            });
+        });
+    </script>
+</body>
+</html>

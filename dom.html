@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин бытовой техники</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .active-category {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .active-sort {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Шапка -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="main.html" class="text-2xl font-bold text-blue-600 flex items-center">
+                    <i class="fas fa-laptop-code mr-2"></i>
+                    ТехноМаркет
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="main.html" class="text-gray-600 hover:text-blue-500">Главная</a>
+                <div class="relative inline-block group">
+                    <button class="text-gray-600 hover:text-blue-500">Каталог</button>
+                    <div class="absolute left-0 mt-2 w-48 bg-white text-black rounded shadow-md opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200">
+                        <a href="phone.html" class="block px-4 py-2 hover:bg-gray-100">Смартфоны</a>
+                        <a href="laptops.html" class="block px-4 py-2 hover:bg-gray-100">Ноутбуки</a>
+                        <a href="tv.html" class="block px-4 py-2 hover:bg-gray-100">Телевизоры</a>
+                        <a href="dom.html" class="block px-4 py-2 hover:bg-gray-100">Бытовая техника</a>
+                        <a href="comp.html" class="block px-4 py-2 hover:bg-gray-100">Комплектующие</a>
+                    </div>
+                </div>
+                <a href="delivery.html" class="text-gray-600 hover:text-blue-500">Доставка</a>
+                <a href="#" class="text-gray-600 hover:text-blue-500">Контакты</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="login.html" class="text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-user"></i>
+                </a>
+                <a href="cart.html" class="text-gray-600 hover:text-blue-500 relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-blue-500">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Категории -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3 overflow-x-auto">
+            <div class="flex space-x-6 min-w-max">
+                <button class="active-category py-2 px-4 rounded transition" onclick="filterProducts('all')">Все товары</button>
+                <button class="py-2 px-4 text-gray-600 hover:bg-blue-50 rounded transition" onclick="filterProducts('fridge')">Холодильники</button>
+                <button class="py-2 px-4 text-gray-600 hover:bg-blue-50 rounded transition" onclick="filterProducts('washer')">Стиральные машины</button>
+                <button class="py-2 px-4 text-gray-600 hover:bg-blue-50 rounded transition" onclick="filterProducts('oven')">Плиты и духовки</button>
+                <button class="py-2 px-4 text-gray-600 hover:bg-blue-50 rounded transition" onclick="filterProducts('ac')">Кондиционеры</button>
+                <button class="py-2 px-4 text-gray-600 hover:bg-blue-50 rounded transition" onclick="filterProducts('vacuum')">Пылесосы</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основное содержимое -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Хлебные крошки -->
+        <div class="flex items-center text-sm text-gray-600 mb-6">
+            <a href="#" class="hover:text-blue-500">Главная</a>
+            <span class="mx-2">/</span>
+            <span id="current-category">Бытовая техника</span>
+        </div>
+
+        <!-- Сортировка и заголовок -->
+        <div class="mb-8 bg-white p-4 rounded-lg shadow-sm flex justify-between items-center">
+            <h2 class="text-2xl font-bold text-gray-800" id="category-title">Бытовая техника</h2>
+            <div class="flex items-center">
+                <span class="text-gray-600 mr-2">Сортировка:</span>
+                <div class="flex bg-gray-100 rounded-md">
+                    <button class="py-1 px-3 text-sm rounded-l-md" onclick="sortProducts('default')">По умолчанию</button>
+                    <button class="py-1 px-3 text-sm border-l border-r border-gray-300" onclick="sortProducts('price-asc')">Сначала дешевые</button>
+                    <button class="py-1 px-3 text-sm rounded-r-md" onclick="sortProducts('price-desc')">Сначала дорогие</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Товары -->
+        <div>
+            <!-- Список товаров -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8" id="products-container">
+                <!-- Товары будут загружаться здесь -->
+            </div>
+
+            <!-- Пагинация -->
+            <div class="flex justify-center mt-8">
+                <nav class="flex items-center space-x-1" id="pagination-container">
+                    <button class="px-3 py-1 rounded text-gray-600 hover:bg-blue-50" onclick="prevPage()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="px-3 py-1 rounded bg-blue-500 text-white" onclick="goToPage(1)">1</button>
+                    <button class="px-3 py-1 rounded text-gray-600 hover:bg-blue-50" onclick="goToPage(2)">2</button>
+                    <button class="px-3 py-1 rounded text-gray-600 hover:bg-blue-50" onclick="goToPage(3)">3</button>
+                    <button class="px-3 py-1 rounded text-gray-600 hover:bg-blue-50" onclick="nextPage()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center">
+                <div class="border-t border-gray-700 pt-6 text-center text-gray-400 w-full">
+                    <p>© 2025 ТехноДом. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Данные товаров
+        const products = {
+            all: [
+                {id: 1, name: "Холодильник Samsung RB33J3420SA", price: "42 990", oldPrice: "49 990", rating: 4.5, reviews: 125, category: "fridge", image: "https://via.placeholder.com/300x300?text=Холодильник", tag: "Акция", tagColor: "red"},
+                {id: 2, name: "Стиральная машина LG F2J3NS0W", price: "31 490", rating: 5, reviews: 89, category: "washer", image: "https://via.placeholder.com/300x300?text=Стиральная+машина"},
+                {id: 3, name: "Холодильник Bosch KGN39VL25R", price: "56 990", rating: 4.8, reviews: 72, category: "fridge", image: "https://via.placeholder.com/300x300?text=Холодильник+Bosch"},
+                {id: 4, name: "Плита газовая Bosch HGG634320R", price: "45 990", rating: 4.5, reviews: 42, category: "oven", image: "https://via.placeholder.com/300x300?text=Плита"},
+                {id: 5, name: "Кондиционер Ballu BSE-09HN1", price: "29 990", rating: 4, reviews: 38, category: "ac", image: "https://via.placeholder.com/300x300?text=Кондиционер"},
+                {id: 6, name: "Робот-пылесос Xiaomi Mi Robot Vacuum-Mop 2", price: "24 990", oldPrice: "27 990", rating: 5, reviews: 112, category: "vacuum", image: "https://via.placeholder.com/300x300?text=Пылесос", tag: "Новинка", tagColor: "blue"},
+                {id: 7, name: "Духовой шкаф Bosch HBA534BS0R", price: "38 490", rating: 4.5, reviews: 56, category: "oven", image: "https://via.placeholder.com/300x300?text=Духовка"},
+                {id: 8, name: "Холодильник Haier C2F636CWMV", price: "54 990", rating: 4, reviews: 34, category: "fridge", image: "https://via.placeholder.com/300x300?text=Холодильник"},
+                {id: 9, name: "Стиральная машина Indesit IWSC 51051", price: "22 990", oldPrice: "25 990", rating: 4.2, reviews: 68, category: "washer", image: "https://via.placeholder.com/300x300?text=Стиральная+машина", tag: "Акция", tagColor: "red"},
+                {id: 10, name: "Пылесос Philips FC9355/09", price: "15 990", rating: 4.7, reviews: 94, category: "vacuum", image: "https://via.placeholder.com/300x300?text=Пылесос"},
+                {id: 11, name: "Кондиционер Electrolux EACS/I-09HM/N3", price: "34 990", rating: 4.6, reviews: 47, category: "ac", image: "https://via.placeholder.com/300x300?text=Кондиционер"},
+                {id: 12, name: "Холодильник LG GA-B509SLGL", price: "62 990", rating: 4.9, reviews: 58, category: "fridge", image: "https://via.placeholder.com/300x300?text=Холодильник+LG"},
+                {id: 13, name: "Стиральная машина Samsung WW70T4020EE", price: "28 490", oldPrice: "31 490", rating: 4.4, reviews: 76, category: "washer", image: "https://via.placeholder.com/300x300?text=Стиральная+машина", tag: "Акция", tagColor: "red"},
+                {id: 14, name: "Плита электрическая Hansa FCEW53001", price: "32 990", rating: 4.3, reviews: 39, category: "oven", image: "https://via.placeholder.com/300x300?text=Плита"},
+                {id: 15, name: "Робот-пылесос iRobot Roomba 675", price: "29 990", rating: 4.8, reviews: 103, category: "vacuum", image: "https://via.placeholder.com/300x300?text=Пылесос"},
+                {id: 16, name: "Кондиционер Mitsubishi Electric MSZ-LN25VG", price: "67 990", rating: 5, reviews: 42, category: "ac", image: "https://via.placeholder.com/300x300?text=Кондиционер"}
+            ],
+            fridge: [
+                {id: 1, name: "Холодильник Samsung RB33J3420SA", price: "42 990", oldPrice: "49 990", rating: 4.5, reviews: 125, category: "fridge", image: "https://via.placeholder.com/300x300?text=Холодильник", tag: "Акция", tagColor: "red"},
+                {id: 3, name: "Холодильник Bosch KGN39VL25R", price: "56 990", rating: 4.8, reviews: 72, category: "fridge", image: "https://via.placeholder.com/300x300?text=Холодильник+Bosch"},
+                {id: 8, name: "Холодильник Haier C2F636CWMV", price: "54 990", rating: 4, reviews: 34, category: "fridge", image: "https://via.placeholder.com/300x300?text=Холодильник"},
+                {id: 12, name: "Холодильник LG GA-B509SLGL", price: "62 990", rating: 4.9, reviews: 58, category: "fridge", image: "https://via.placeholder.com/300x300?text=Холодильник+LG"}
+            ],
+            washer: [
+                {id: 2, name: "Стиральная машина LG F2J3NS0W", price: "31 490", rating: 5, reviews: 89, category: "washer", image: "https://via.placeholder.com/300x300?text=Стиральная+машина"},
+                {id: 9, name: "Стиральная машина Indesit IWSC 51051", price: "22 990", oldPrice: "25 990", rating: 4.2, reviews: 68, category: "washer", image: "https://via.placeholder.com/300x300?text=Стиральная+машина", tag: "Акция", tagColor: "red"},
+                {id: 13, name: "Стиральная машина Samsung WW70T4020EE", price: "28 490", oldPrice: "31 490", rating: 4.4, reviews: 76, category: "washer", image: "https://via.placeholder.com/300x300?text=Стиральная+машина", tag: "Акция", tagColor: "red"}
+            ],
+            oven: [
+                {id: 4, name: "Плита газовая Bosch HGG634320R", price: "45 990", rating: 4.5, reviews: 42, category: "oven", image: "https://via.placeholder.com/300x300?text=Плита"},
+                {id: 7, name: "Духовой шкаф Bosch HBA534BS0R", price: "38 490", rating: 4.5, reviews: 56, category: "oven", image: "https://via.placeholder.com/300x300?text=Духовка"},
+                {id: 14, name: "Плита электрическая Hansa FCEW53001", price: "32 990", rating: 4.3, reviews: 39, category: "oven", image: "https://via.placeholder.com/300x300?text=Плита"}
+            ],
+            ac: [
+                {id: 5, name: "Кондиционер Ballu BSE-09HN1", price: "29 990", rating: 4, reviews: 38, category: "ac", image: "https://via.placeholder.com/300x300?text=Кондиционер"},
+                {id: 11, name: "Кондиционер Electrolux EACS/I-09HM/N3", price: "34 990", rating: 4.6, reviews: 47, category: "ac", image: "https://via.placeholder.com/300x300?text=Кондиционер"},
+                {id: 16, name: "Кондиционер Mitsubishi Electric MSZ-LN25VG", price: "67 990", rating: 5, reviews: 42, category: "ac", image: "https://via.placeholder.com/300x300?text=Кондиционер"}
+            ],
+            vacuum: [
+                {id: 6, name: "Робот-пылесос Xiaomi Mi Robot Vacuum-Mop 2", price: "24 990", oldPrice: "27 990", rating: 5, reviews: 112, category: "vacuum", image: "https://via.placeholder.com/300x300?text=Пылесос", tag: "Новинка", tagColor: "blue"},
+                {id: 10, name: "Пылесос Philips FC9355/09", price: "15 990", rating: 4.7, reviews: 94, category: "vacuum", image: "https://via.placeholder.com/300x300?text=Пылесос"},
+                {id: 15, name: "Робот-пылесос iRobot Roomba 675", price: "29 990", rating: 4.8, reviews: 103, category: "vacuum", image: "https://via.placeholder.com/300x300?text=Пылесос"}
+            ]
+        };
+
+        const categoryNames = {
+            all: "Бытовая техника",
+            fridge: "Холодильники",
+            washer: "Стиральные машины",
+            oven: "Плиты и духовки",
+            ac: "Кондиционеры",
+            vacuum: "Пылесосы"
+        };
+
+        let currentCategory = 'all';
+        let currentPage = 1;
+        let currentSort = 'default';
+        const itemsPerPage = 8;
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts(currentCategory);
+            updatePagination();
+            updateActiveSort();
+        });
+
+        // Фильтрация товаров по категории
+        function filterProducts(category) {
+            currentCategory = category;
+            currentPage = 1;
+            loadProducts(category);
+            updatePagination();
+            updateActiveCategory(category);
+
+            // Обновляем заголовки
+            document.getElementById('current-category').textContent = categoryNames[category];
+            document.getElementById('category-title').textContent = categoryNames[category];
+        }
+
+        // Сортировка товаров
+        function sortProducts(sortType) {
+            currentSort = sortType;
+            currentPage = 1;
+            loadProducts(currentCategory);
+            updatePagination();
+            updateActiveSort();
+        }
+
+        // Обновление активной сортировки
+        function updateActiveSort() {
+            const sortButtons = document.querySelectorAll('.flex.bg-gray-100 button');
+            sortButtons.forEach(button => {
+                button.classList.remove('active-sort');
+            });
+
+            const activeButton = document.querySelector(`button[onclick="sortProducts('${currentSort}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active-sort');
+            }
+        }
+
+        // Загрузка товаров с пагинацией и сортировкой
+        function loadProducts(category) {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+
+            let categoryProducts = [...(products[category] || [])];
+
+            // Применяем сортировку
+            if (currentSort === 'price-asc') {
+                categoryProducts.sort((a, b) => {
+                    const priceA = parseInt(a.price.replace(/\s/g, ''));
+                    const priceB = parseInt(b.price.replace(/\s/g, ''));
+                    return priceA - priceB;
+                });
+            } else if (currentSort === 'price-desc') {
+                categoryProducts.sort((a, b) => {
+                    const priceA = parseInt(a.price.replace(/\s/g, ''));
+                    const priceB = parseInt(b.price.replace(/\s/g, ''));
+                    return priceB - priceA;
+                });
+            }
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, categoryProducts.length);
+            const productsToShow = categoryProducts.slice(startIndex, endIndex);
+
+            productsToShow.forEach(product => {
+                const productCard = createProductCard(product);
+                container.appendChild(productCard);
+            });
+        }
+
+        // Создание карточки товара
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card bg-white rounded-lg overflow-hidden shadow-sm transition duration-300';
+
+            let imageHtml = `
+                <div class="relative">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-contain">
+            `;
+
+            if (product.tag) {
+                imageHtml += `
+                    <div class="absolute top-2 right-2 bg-${product.tagColor}-500 text-white text-xs px-2 py-1 rounded">${product.tag}</div>
+                `;
+            }
+
+            imageHtml += `</div>`;
+
+            let priceHtml = `
+                <div class="flex items-center">
+                    <span class="text-lg font-bold text-gray-800">${product.price} ₽</span>
+            `;
+
+            if (product.oldPrice) {
+                priceHtml += `
+                    <span class="ml-2 text-sm text-gray-500 line-through">${product.oldPrice} ₽</span>
+                `;
+            }
+
+            priceHtml += `</div>`;
+
+            let ratingHtml = '';
+            const fullStars = Math.floor(product.rating);
+            const hasHalfStar = product.rating % 1 >= 0.5;
+
+            for (let i = 0; i < fullStars; i++) {
+                ratingHtml += '<i class="fas fa-star text-yellow-400"></i>';
+            }
+
+            if (hasHalfStar) {
+                ratingHtml += '<i class="fas fa-star-half-alt text-yellow-400"></i>';
+            }
+
+            for (let i = 0; i < 5 - Math.ceil(product.rating); i++) {
+                ratingHtml += '<i class="far fa-star text-yellow-400"></i>';
+            }
+
+            card.innerHTML = `
+                ${imageHtml}
+                <div class="p-4">
+                    <h3 class="font-medium text-gray-800 mb-1">${product.name}</h3>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400 mr-2">
+                            ${ratingHtml}
+                        </div>
+                        <span class="text-gray-500 text-sm">${product.reviews} отзывов</span>
+                    </div>
+                    ${priceHtml}
+                    <button class="w-full mt-4 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">В корзину</button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Обновление активной категории
+        function updateActiveCategory(activeCategory) {
+            const buttons = document.querySelectorAll('.flex.space-x-6 button');
+            buttons.forEach(button => {
+                button.classList.remove('active-category');
+                button.classList.add('text-gray-600', 'hover:bg-blue-50');
+            });
+
+            const activeButton = document.querySelector(`button[onclick="filterProducts('${activeCategory}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active-category');
+                activeButton.classList.remove('text-gray-600', 'hover:bg-blue-50');
+            }
+        }
+
+        // Пагинация
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadProducts(currentCategory);
+                updatePagination();
+            }
+        }
+
+        function nextPage() {
+            const categoryProducts = products[currentCategory] || [];
+            const totalPages = Math.ceil(categoryProducts.length / itemsPerPage);
+
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadProducts(currentCategory);
+                updatePagination();
+            }
+        }
+
+        function goToPage(page) {
+            const categoryProducts = products[currentCategory] || [];
+            const totalPages = Math.ceil(categoryProducts.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                loadProducts(currentCategory);
+                updatePagination();
+            }
+        }
+
+        function updatePagination() {
+            const categoryProducts = products[currentCategory] || [];
+            const totalPages = Math.ceil(categoryProducts.length / itemsPerPage);
+            const paginationContainer = document.getElementById('pagination-container');
+
+            // Обновляем активную страницу
+            for (let i = 1; i <= 3; i++) {
+                const pageBtn = document.querySelector(`button[onclick="goToPage(${i})"]`);
+                if (pageBtn) {
+                    if (i === currentPage) {
+                        pageBtn.classList.add('bg-blue-500', 'text-white');
+                        pageBtn.classList.remove('text-gray-600', 'hover:bg-blue-50');
+                    } else {
+                        pageBtn.classList.remove('bg-blue-500', 'text-white');
+                        pageBtn.classList.add('text-gray-600', 'hover:bg-blue-50');
+                    }
+
+                    // Скрываем кнопки, если страницы не существует
+                    if (i > totalPages) {
+                        pageBtn.style.display = 'none';
+                    } else {
+                        pageBtn.style.display = 'block';
+                    }
+                }
+            }
+
+            // Показываем/скрываем кнопки пагинации в зависимости от общего количества страниц
+            if (totalPages <= 1) {
+                paginationContainer.style.display = 'none';
+            } else {
+                paginationContainer.style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>
